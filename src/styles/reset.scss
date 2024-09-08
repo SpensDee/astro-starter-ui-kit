@@ -82,6 +82,10 @@ textarea {
   color: inherit;
 }
 
+dialog {
+  border: none;
+}
+
 @media prefers-reduced-motion {
   * {
     animation: none !important;

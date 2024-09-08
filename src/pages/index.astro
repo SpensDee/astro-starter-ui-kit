@@ -1,9 +1,21 @@
 ---
+import Popup from '../components/Popup.astro';
 import Layout from '../layouts/Layout.astro';
+import Cross1 from "@astropub/icons/Cross1";
+
 ---
 
 <Layout title="Welcome to Astro.">
 	<main>
+		<Popup>
+			<span slot="button-open">open popup</span>
+			<i slot="button-close">
+				<Cross1 size="22" fill="var(--light-green)"/>
+			</i>
+			<p>
+				Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque eum natus optio sit nam similique omnis voluptatum ullam id atque sunt, accusamus quod itaque vitae sed fuga harum eligendi error!
+			</p>
+		</Popup>
 	</main>
 </Layout>
 

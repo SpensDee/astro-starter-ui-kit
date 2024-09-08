@@ -1,13 +1,60 @@
 ---
+import { getRandomString } from "../functions/random";
 
+const randomID = getRandomString();
 ---
-<button popovertarget="modal">Open Modal</button>
+<button popovertarget={randomID}>
+    <slot name="button-open">
+</button>
 
-<dialog popover id="modal">
-    <button popovertarget="modal">x</button>
-    <slot>
-
-    </slot>
+<dialog popover id={randomID} class="k-popup">
+    <button popovertarget={randomID}>
+        <slot name="button-close"/>
+    </button>
+    <slot></slot>
 </dialog>
 
+<style lang="scss">
+dialog {
+  transition: opacity 0.2s, transform 0.2s, display 0.2s allow-discrete;
 
+  opacity: 0;
+  transform: scale(0.8);
+
+  &:popover-open {
+    opacity: 1;
+    transform: scale(1);
+
+    @starting-style {
+      & {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+    }
+  }
+}
+</style>
+
+<!-- 
+### Приклад використання ###
+
+1) Імпортувати та інінціалізувати компонент <Popup></Popup>
+2) Додати в компонент тег з атрибутом slot="button-open" в який помістити текст або іконку для кнопки відкриття 
+3) Додати в компонент тег з атрибутом slot="button-close" в який помістити текст або іконку для кнопки закриття вікна
+4) Додати контент 
+
+---
+import Cross1 from "@astropub/icons/Cross1";
+---
+<Popup>
+    <span slot="button-open">Open Pop-Up</span>
+
+    <i slot="button-close">
+        <Cross1 size="22" fill="grey"/>
+    </i>
+
+    <p>
+        Твій контент
+    </p>
+</Popup> 
+-->
