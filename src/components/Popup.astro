@@ -1,18 +1,19 @@
 ---
 import { getRandomString } from "../functions/random";
 
-const randomID = getRandomString();
+const getRandomID = getRandomString();
 ---
-<button popovertarget={randomID}>
+<button popovertarget={getRandomID}>
     <slot name="button-open">
 </button>
 
-<dialog popover id={randomID} class="k-popup">
-    <button popovertarget={randomID}>
+<dialog popover role="dialog" id={getRandomID} class="k-popup">
+    <button popovertarget={getRandomID}>
         <slot name="button-close"/>
     </button>
     <slot></slot>
 </dialog>
+<div></div>
 
 <style lang="scss">
 dialog {

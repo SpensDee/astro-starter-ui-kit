@@ -10,6 +10,8 @@
   --light-grey: rgb(77, 77, 77);
 }
 
+$border-radius: 8px;
+
 body {
   background-color: #212121;
   font-family: Arial, Helvetica, sans-serif;
@@ -20,7 +22,7 @@ button {
   background-color: var(--grey);
   transition: background-color 0.2s;
   will-change: background-color;
-  border-radius: 8px;
+  border-radius: $border-radius;
   padding: 0 15px;
   height: 40px;
   width: fit-content;
@@ -36,7 +38,7 @@ button {
 .k-popup {
   padding: 20px 20px 40px 40px;
   background-color: var(--light-grey);
-  border-radius: 10px;
+  border-radius: $border-radius;
   color: var(--white);
   width: clamp(300px, 600px, 90vw);
 

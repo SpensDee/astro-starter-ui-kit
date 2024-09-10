@@ -1,0 +1,38 @@
+---
+import Star from "@astropub/icons/Star";
+import { getRandomString } from "../functions/random";
+
+const randomIDs = Array.from({ length: 5 }, () => getRandomString());
+---
+
+<fieldset class="k-starRating">
+    {randomIDs.map((star, index) => (
+         <input 
+            type="radio" 
+            id={randomIDs[index]} 
+            name="rating" 
+            value={Math.abs(index -= 5)} />
+
+         <label 
+            aria-label={`${Math.abs(index)} star`} 
+            for={randomIDs[index]}>&star;</label>
+    ))}
+</fieldset>
+
+
+<style>
+    fieldset {
+        display: flex;
+        align-items: center;
+    }
+
+    input:is(:checked, :hover) ~ label {
+        color: var(--light-green);
+    }
+
+    input {
+        /* position: absolute;
+        opacity: 0; */
+    }
+
+</style>
