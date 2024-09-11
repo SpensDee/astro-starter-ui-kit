@@ -15,7 +15,9 @@ const randomIDs = Array.from({ length: 5 }, () => getRandomString());
 
          <label 
             aria-label={`${Math.abs(index)} star`} 
-            for={randomIDs[index]}>&star;</label>
+            for={randomIDs[index]}>
+                <Star/>
+            </label>
     ))}
 </fieldset>
 
@@ -26,13 +28,14 @@ const randomIDs = Array.from({ length: 5 }, () => getRandomString());
         align-items: center;
     }
 
-    input:is(:checked, :hover) ~ label {
-        color: var(--light-green);
+    input:is(:checked, :hover) ~ label 
+    {
+        fill: var(--accent-color);
+        color: var(--accent-color);
     }
 
     input {
-        /* position: absolute;
-        opacity: 0; */
+       /* display: none; */
     }
 
 </style>
