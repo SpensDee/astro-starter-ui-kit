@@ -3,67 +3,83 @@ import { getRandomString } from "../functions/random";
 
 const getRandomID = getRandomString();
 
-const { backdrop } = Astro.props;
+const { backdrop, close } = Astro.props;
 ---
-<button popovertarget={getRandomID}>
-    <slot name="button-open">
-</button>
+<button popovertarget={getRandomID} class="open-popup"> Open Popover </button>
 
-<dialog popover role="dialog" id={getRandomID} class="k-popup">
-    <button popovertarget={getRandomID}>
-        <slot name="button-close"/>
-    </button>
-    <div>
-      <slot></slot>
+<dialog id={getRandomID} popover=auto>
+    <div class="popup-inner">
+        <!-- ts-ignore -->
+        <button class="close-btn" popovertarget={getRandomID} popovertargetaction="hide">{close ? close : '❌'}</button>
+        <slot/>
     </div>
 </dialog>
 
-<style lang="scss" define:vars={{backdrop}}>
-dialog {
-  transition: opacity 0.2s, transform 0.2s, display 0.2s allow-discrete;
-  max-height: calc(100dvh - 40px);
-  opacity: 0;
-  transform: scale(0.8);
 
-  &:popover-open {
+<style lang="scss" define:vars={{backdrop}}>
+:root {
+    --popup-width: 600px;
+    --popup-height: 600px;
+    --popup-backdrop: rgba(42, 41, 41, 0.5);
+    --popup-padding: 30px;
+    --popup-border-radius: 16px;
+}
+
+dialog {
+    transition: opacity 0.2s, transform 0.2s, display 0.2s allow-discrete;
+    max-height: min(var(--popup-width), calc(100dvh - 40px));
+    max-width: min(var(--popup-height), calc(100vw - 40px));
+    overscroll-behavior: contain;
+    opacity: 0;
+    transform: scale(0.8);
+    padding: var(--popup-padding);
+    border: none;
+    border-radius: var(--popup-border-radius);
+}
+
+body :is(button, a, image):has(dialog:popover-open) {
+    overflow: hidden;
+    pointer-events: none;
+}
+
+dialog:popover-open {
     opacity: 1;
     transform: scale(1);
-
-    @starting-style {
-      & {
-        opacity: 0;
-        transform: scale(0.8);
-      }
-    }
-  }
-
-  &::backdrop {
-    background-color: var(--backdrop);
-  }
+    overflow: auto;
+    pointer-events: auto;
 }
-</style>
 
-<!-- 
-### Приклад використання ###
+@starting-style {
+    dialog:popover-open {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+}
 
-1) Імпортувати та інінціалізувати компонент <Popup></Popup>
-2) Додати в компонент тег з атрибутом slot="button-open" в який помістити текст або іконку для кнопки відкриття 
-3) Додати в компонент тег з атрибутом slot="button-close" в який помістити текст або іконку для кнопки закриття вікна
-4) Додати контент 
-5) Якщо потрібен певний задній фон то його можна задатии в props backdrop
+dialog::backdrop {
+    background: var(--popup-backdrop);
+}
 
----
-import Cross1 from "@astropub/icons/Cross1";
----
-<Popup backdrop="#00000057">
-    <span slot="button-open">Open Pop-Up</span>
+body:has(dialog:popover-open) {
+    overflow: hidden;
+    pointer-events: none;
+}
 
-    <i slot="button-close">
-        <Cross1 size="22" fill="grey"/>
-    </i>
+.popup-inner .close-btn {
+    position: sticky;
+    top: 0;
+    left: 100%;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+    outline: transparent;
+}
 
-    <p>
-        Твій контент
-    </p>
-</Popup> 
--->
+.popup-inner .close-btn:hover {
+    background-color: greenyellow;
+}
+

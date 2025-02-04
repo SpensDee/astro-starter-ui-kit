@@ -1,28 +1,83 @@
 ---
-import '../styles/global.scss';
-import '../styles/default-theme.scss';
-
-interface Props {
-	title: string;
-}
-
-const { title } = Astro.props;
+import Background from '@components/Background.astro';
+import { AstroFont } from "astro-font";
+import './main.scss';
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
+		<AstroFont 
+		config={[
+			{
+			  name: "ekaterinavelikayaone",
+			  src: [
+				{
+				  style: 'normal',
+				  weight: '400',
+				  path: './public/fonts/ekaterinavelikayaone.woff2'
+				},
+			  ],
+			  preload: true,
+			  display: "swap",
+			  selector: "body",
+			  fallback: "sans-serif",
+			},
+			{
+				name: 'MabryPro',
+				src: [
+					{
+						style: 'Light',
+				  		weight: '300',
+				  		path: './public/fonts/MabryPro-Light.woff2'
+					},
+					{
+						style: 'Regular',
+				  		weight: '400',
+				  		path: './public/fonts/MabryPro-Regular.woff2'
+					},
+					{
+						style: 'Medium',
+				  		weight: '500',
+				  		path: './public/fonts/MabryPro-Medium.woff2'
+					}
+				],
+			  preload: true,
+			  display: "swap",
+			  selector: "body",
+			  fallback: "sans-serif",
+			},
+			{
+				name: 'HalvarBreit',
+				src: [
+					{
+						style: 'Bold',
+				  		weight: '600',
+				  		path: './public/fonts/HalvarBreit-XBd.woff2'
+					},
+				],
+			  preload: true,
+			  display: "swap",
+			  selector: "body",
+			  fallback: "sans-serif",
+			}
+		  ]}
+		/>
 		<meta charset="UTF-8" />
 		<meta name="description" content="Astro description" />
 		<meta name="viewport" content="width=320, initial-scale=1.0, minimum-scale=1.0" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
+		<title>Valent</title>
 	</head>
-	<body>
+	
+	<Background>
 		<slot />
-	</body>
-</html>
-<style is:global lang="scss">
+	</Background>
 
-</style>
+	<script>
+		import { translate } from 'src/functions/translate.js';
+		translate()
+	</script>
+</html>
+

@@ -1,0 +1,84 @@
+<nav>
+    <ul>
+        <li><a href="#ua" id="ua">UA</a></li>
+        <li><a href="#ru" id="ru">RU</a></li>
+        <li><a href="#en" id="en">EN</a></li>
+    </ul>
+    <div class="a"></div>
+</nav>
+
+<style lang="scss">
+  @use 'src/styles/vars' as *;
+
+%size {
+    width: 33px;
+    height: 30px;
+
+    @include md() {
+        width: 28px;
+        height: 25px;
+    }
+}
+
+nav {
+    position: relative;
+    @extend %flex-row;
+    @extend %size;
+    column-gap: 22px;
+}
+
+ul {
+    @extend %flex-row;
+}
+
+li {
+    font-size: 16px;
+    color: white;
+    @extend %size;
+    @extend %flex-center;
+
+    @include md() {
+        font-size: 12px;
+    }
+}
+
+a {
+    text-decoration: none;
+
+    &:not(:target) {
+        color: #8F8F8F;
+    }
+
+    &:target {
+        color: white;
+    }
+
+    @media(hover: hover) {
+        &:hover {
+            color: var(--accent-color);
+        }
+    }
+}
+
+div{
+    position: absolute;
+    top: -1px;
+    left: 0;
+    @extend %size;
+    border: 1px solid white;
+    border-radius: 5px;
+    transition: transform 0.3s cubic-bezier(0.7, 0.32, 0.28, 1.45);
+    transform: translateX(0);
+}
+nav:has(#ru:target) div {
+    transform: translateX(100%);
+}
+
+nav:has(#en:target) div {
+    transform: translateX(200%);
+}
+
+nav:has(#ua:target) div {
+    transform: translateX(0);
+}
+</style>

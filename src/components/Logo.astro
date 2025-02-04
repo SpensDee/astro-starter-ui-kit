@@ -1,0 +1,28 @@
+---
+import { Image } from 'astro:assets';
+import logo from "../assets/logo.svg";
+const { link } = Astro.props;
+---
+<a href={link} target="_blank">
+    <Image src={logo} alt="лого" width={50} height={50}/>
+</a>
+
+
+<style lang="scss">
+    @use 'src/styles/vars' as *;
+
+a {
+    transition: filter 0.2s ease-in-out;
+    @media(hover: hover) {
+        &:hover {
+            filter: drop-shadow(0px 0px 4px var(--accent-color));
+        }
+    }   
+}
+img {
+    @include md() {
+        width: 35px;
+        height: 35px;
+    }
+}
+</style>

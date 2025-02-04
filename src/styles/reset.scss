@@ -3,10 +3,6 @@ body {
   padding: 0;
 }
 
-body {
-  margin: 0;
-}
-
 :where(p, h1, h2, h3, h4)[class] {
   margin-block: 0;
 }
@@ -17,14 +13,9 @@ body {
   box-sizing: border-box;
 }
 
-body,
-html {
-  width: 100%;
-  overflow-x: hidden;
-}
-
 body {
-  min-height: 100dvh;
+  margin: 0;
+  scrollbar-gutter: stable;
 }
 
 img,
@@ -50,13 +41,17 @@ a {
   }
 }
 
+a, button {
+  cursor: pointer;
+}
+
 ol,
 ul,
 li {
   list-style-position: inside;
 }
 
-:where(ol, ul, li)[class] {
+ol, ul, li {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -86,10 +81,3 @@ dialog {
   border: none;
 }
 
-@media prefers-reduced-motion {
-  * {
-    animation: none !important;
-    transition: none !important;
-    scroll-behavior: auto !important;
-  }
-}

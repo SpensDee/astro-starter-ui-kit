@@ -1,0 +1,31 @@
+---
+const { type } = Astro.props;
+---
+{type === 'main' && (
+<h1 data-translate="mainTitle">
+    <img src="/title1-ua.svg" width="100%" alt="мапа affiliate - пристрасті"/>
+</h1>
+)}
+
+{type === 'second' && (
+<h1 data-translate="secondTitle">
+    <img src="/title1-ua.svg" width="100%" alt="мапа affiliate - пристрасті"/>
+</h1>
+)}
+
+{type === 'additional' && (
+<h1 data-translate="additionalTitle">
+    <img src="/title1-ua.svg" width="100%" alt="щоденні призи"/>
+</h1>
+)}
+
+
+<style lang="scss">
+    @use 'src/styles/vars' as *;
+
+    h1 {
+        max-width: 800px;
+        pointer-events: none;
+        user-select: none;
+    }   
+</style>

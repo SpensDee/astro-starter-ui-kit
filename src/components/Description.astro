@@ -1,0 +1,88 @@
+<div class="description">
+    <div class="description__bg"></div>
+    <div class="description__content">
+        <div class="description__col">
+            <img src="/icon1.svg" alt="decor icon"/> 
+            <span data-translate="descriptionCol1">
+                Вітаємо на карті <br/> пригод до Дня <br/> Святого Валентина!
+            </span>
+        </div>
+        <div class="description__col">
+            <img src="/icon2.svg" alt="decor icon"/>
+            <span data-translate="descriptionCol2">
+                Пройди шлях, виконуй <br/> завдання і вигравай <br/> щоденні призи!
+            </span>
+        </div>
+    </div>
+</div>
+
+<style lang="scss">
+@use 'src/styles/vars' as *;
+    .description {
+		--block: 28px;
+		--inline: 38px;
+		border-radius: var(--block);
+		padding:  var(--block)  var(--inline);
+		position: relative;
+
+        &__content {
+            @extend %flex-row;
+            justify-content: space-evenly;
+            gap: 18px 30px;
+            position: relative;
+            z-index: 3;
+
+            @include md() {
+                flex-wrap: wrap;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+		
+		&__bg {
+			border-radius: 22px;
+			background-color: #000000;
+			opacity: .5;
+			position: absolute;
+			inset: 0;
+
+			&::before {
+				content: "";
+				position: absolute;
+				inset: 0px;
+				border-radius: 22px;
+				padding: 2px;
+				-webkit-mask: 
+					linear-gradient(white 0%, white 0%) content-box content-box, 
+					linear-gradient(white 0%, white 0%);
+				-webkit-mask-composite: xor;
+				background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, 
+                                     rgba(255, 255, 255, 0) 50%, 
+                                     rgba(255, 255, 255, 1) 100%);
+            }
+
+			&::after {
+				content: "";
+				position: absolute;
+				inset: 0px;
+				z-index: -1;
+				opacity: 0;
+				transition: opacity 0.4s ease 0s;
+				border-radius: 12px;
+			}
+		}
+		&__col {
+			@extend %flex-row;
+			gap: 14px;
+			font-family: 'MabryPro';
+			font-weight: 300;
+			font-size: 18px;
+
+            @include md() {
+                font-size: 14px;
+
+                justify-content: flex-start;
+            }
+		}
+	}
+</style>

@@ -1,0 +1,147 @@
+@use "sass:map";
+
+
+$light-green: rgb(0, 206, 62);
+$white: #fafafa;
+$black: #212121;
+$dark-grey: rgb(31, 32, 44);
+$light-grey: rgb(154, 156, 172);
+$border-radius: 16px;
+$accent-color: $light-green;
+$container-width: 1140px;
+
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+  xxl: 1320px,
+);
+
+// Универсальный миксин для контейнера
+@mixin make-container($max-width: null) {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 15px;
+  padding-left: 15px;
+
+  @if $max-width {
+    max-width: $max-width;
+  }
+}
+
+// Міксины для адаптивних контейнерів
+@mixin container-sm {
+  @include make-container(map.get($container-max-widths, sm));
+}
+
+@mixin container-md {
+  @include make-container(map.get($container-max-widths, md));
+}
+
+@mixin container-lg {
+  @include make-container(map.get($container-max-widths, lg));
+}
+
+@mixin container-xl {
+  @include make-container(map.get($container-max-widths, xl));
+}
+
+@mixin container-xxl {
+  @include make-container(map.get($container-max-widths, xxl));
+}
+
+// Миксини для медіа-запитів
+@mixin sm {
+  @media (max-width: #{map.get($container-max-widths, sm)}) {
+    @content;
+  }
+}
+
+@mixin md {
+  @media (max-width: #{map.get($container-max-widths, md)}) {
+    @content;
+  }
+}
+
+@mixin lg {
+  @media (max-width: #{map.get($container-max-widths, lg)}) {
+    @content;
+  }
+}
+
+@mixin xl {
+  @media (max-width: #{map.get($container-max-widths, xl)}) {
+    @content;
+  }
+}
+
+@mixin xxl {
+  @media (max-width: #{map.get($container-max-widths, xxl)}) {
+    @content;
+  }
+}
+
+@mixin container($breakpoint) {
+  $max-width: map.get($container-max-widths, $breakpoint);
+
+  @if $max-width {
+    width: 100%;
+    max-width: $max-width;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 15px;
+    padding-left: 15px;
+  } @else {
+    @error "Брейкпоинт #{$breakpoint} не определен в $container-max-widths";
+  }
+}
+
+// контейнер
+%container {
+  margin: 0 auto;
+  padding: 0 20px;
+
+  @include sm {
+    @include container(sm);
+  }
+
+  @include md {
+    @include container(md);
+  }
+
+  @include lg {
+    @include container(lg);
+  }
+
+  @include xl {
+    @include container(xl);
+  }
+
+  @include xxl {
+    @include container(xxl);
+  }
+}
+
+%lock-scroll {
+  position: fixed;
+  top: var(--scroll-y);
+}
+
+%flex-row {
+  display: flex;
+  align-items: center;
+}
+
+%flex-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+%flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
