@@ -1,0 +1,52 @@
+<div class="frame">
+    <div class="frame__bg"></div>
+   <slot/>
+</div>
+
+<style lang="scss">
+@use 'src/styles/vars' as *;
+    .frame {
+		--block: 28px;
+		--inline: 38px;
+		border-radius: var(--block);
+		padding:  var(--block)  var(--inline);
+		position: relative;
+		width: fit-content;
+		
+		&__bg {
+			border-radius: 22px;
+			background-color: #000000;
+			opacity: .5;
+			position: absolute;
+			inset: 0;
+
+			&::before {
+				content: "";
+				position: absolute;
+				inset: 0px;
+				border-radius: 22px;
+				padding: 2px;
+				-webkit-mask: 
+					linear-gradient(white 0%, white 0%) content-box content-box, 
+					linear-gradient(white 0%, white 0%);
+				-webkit-mask-composite: xor;
+
+				@supports (-webkit-mask-composite: xor) {
+					background: linear-gradient(90deg, rgb(255, 255, 255) 0%, 
+													rgba(255, 255, 255, 0) 50%, 
+													rgb(255, 255, 255) 100%);
+					}
+			}
+
+			&::after {
+				content: "";
+				position: absolute;
+				inset: 0px;
+				z-index: -1;
+				opacity: 0;
+				transition: opacity 0.4s ease 0s;
+				border-radius: 12px;
+			}
+		}
+	}
+</style>

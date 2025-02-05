@@ -2,24 +2,28 @@
 const { type } = Astro.props;
 ---
 {type === 'main' && (
-<h1 data-translate="mainTitle">
-    <img src="/title1-ua.svg" width="100%" alt="мапа affiliate - пристрасті"/>
-</h1>
+    <h1 data-translate="mainTitle">
+        <picture>
+            <source srcset="/title1-ua-mob.svg" media="(max-width: 720px)" />
+            <img src="/title1-ua.svg" width="100%" alt="мапа affiliate - пристрасті" />
+        </picture>
+    </h1>
 )}
 
 {type === 'second' && (
-<h1 data-translate="secondTitle">
-    <img src="/title1-ua.svg" width="100%" alt="мапа affiliate - пристрасті"/>
-</h1>
+    <h1 data-translate="secondTitle">
+        <img src="/title2-ua-mob.svg" width="100%" alt="мапа affiliate - пристрасті"/>
+    </h1>
 )}
 
 {type === 'additional' && (
-<h1 data-translate="additionalTitle">
-    <img src="/title1-ua.svg" width="100%" alt="щоденні призи"/>
-</h1>
+    <h1 data-translate="additionalTitle">
+        <picture>
+            <source srcset="/title3-ua-mob.svg" media="(max-width: 720px)" />
+            <img src="/title3-ua.svg" width="100%" alt="щоденні призи"/>
+        </picture>
+    </h1>
 )}
-
-
 <style lang="scss">
     @use 'src/styles/vars' as *;
 

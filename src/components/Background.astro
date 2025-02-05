@@ -1,9 +1,85 @@
+---
+import { getRandomNumber } from './../functions/random';
+
+import decor1 from '../assets/decor-1.png';
+import decor2 from '../assets/decor-2.png';
+import decor3 from '../assets/decor-3.png';
+import decor4 from '../assets/decor-4.png';
+import decor5 from '../assets/decor-5.png';
+import decor6 from '../assets/decor-6.png';
+import Picture from 'astro/components/Picture.astro';
+
+const decorList = [
+    {
+        link: decor1,
+        width: 24,
+        top: 1,
+        left: 3,
+    }, 
+    {
+        link: decor2,
+        width: 26,
+        top: 31,
+        left: -1,
+    }, 
+    {
+        link: decor3,
+        width: 27.3,
+        top: 56,
+        left: 15,
+    }, 
+    {
+        link: decor4,
+        width: 18,
+        top: 64,
+        left: 55,
+    }, 
+    {
+        link: decor5,
+        width: 33.5,
+        top: 39,
+        left: 66,
+    }, 
+    {
+        link: decor6,
+        width: 16,
+        top: 6,
+        left: 78,
+    },
+]
+---
+
 <body>
+    <div class="decor-axios">
+        <div class="decor-wrapper">
+            {decorList.map((img, index) => {
     
+                const { width: size, link, top, left } = img;
+    
+                return (
+                <Picture 
+                    src={link} 
+                    alt="decor" 
+                    style={{
+                        width: `${size}%`, 
+                        top: `${top}%`,
+                        left: `${left}%`,
+                        animationDuration: `${getRandomNumber(3, 5)}s`,
+                        animationDelay: `${getRandomNumber(0.1, 0.7)}s`,
+                    }}
+                    class={`decor decor-${index}`}
+                    formats={['avif', 'webp', 'png']}
+                    decoding="async"/>
+                )
+            })}
+        </div>
+    </div>
     <slot/>
 </body>
 
 <style lang="scss">
+    @use 'src/styles/vars' as *;
+
     body {
         background-image: url('/BG.progressive.jpg');
         background-repeat: no-repeat;
@@ -22,6 +98,89 @@
                 background-image: url('/BG2-mob.progressive.jpg');
                 background-position: center top;
             }
+        }
+    }
+
+    .decor-axios {
+        position: absolute;
+        width: 1920px;
+        aspect-ratio: 192 / 110;
+        margin: auto;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        @include xxl() {
+            width: 1220px;
+            top: 64%;
+            aspect-ratio: 192 / 160;
+        }
+
+        @include md() {
+            width: 560px;
+            aspect-ratio: initial;
+            height: 100%;
+            top: 50%;
+        }
+    }
+
+    .decor {
+        animation-name: fly;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
+        position: absolute;
+        object-fit: cover;
+        height: auto;
+        // pointer-events: none;
+        z-index: -1;
+
+        @include md() {
+
+            &-0 {
+                display: none;
+            }
+
+            &-1 {
+                width: 35% !important;
+                top: 32% !important;
+                left: 7% !important;
+            }
+
+            &-2 {
+                width: 39% !important;
+                top: 70% !important;
+                left: 12% !important;
+            }
+
+            &-3 {
+                width: 35% !important;
+                top: 77% !important;
+                left: 60% !important;
+            }
+
+            &-4 {
+                width: 52% !important;
+                top: 24% !important;
+                left: 57% !important;
+            }
+
+            &-5 {
+                width: 33% !important;
+                top: 3% !important;
+                left: 64% !important;
+            }
+        }
+    }
+
+    @keyframes fly {
+        0% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-20px);
+        }
+        100% {
+            transform: translateY(0);
         }
     }
 </style>

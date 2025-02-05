@@ -1,0 +1,396 @@
+---
+import ButtonHearth from "@components/Buttons/ButtonHearth.astro";
+---
+
+<form>
+    <img src="/logo-title.svg">
+    <legend>
+        <label class="form__label form-status">
+            <span data-translate="formRadio"></span>
+            <div class="form__radio-group">
+                <label class="form__radio">
+                    <input type="radio" name="partner" value="web" checked>
+                    <span class="form__radio-custom"></span> 
+                    <span data-translate="formRadio1"></span>
+                </label>
+                <label class="form__radio">
+                    <input type="radio" name="partner" value="visitor">
+                    <span class="form__radio-custom"></span> 
+                    <span data-translate="formRadio2"></span>
+                </label>
+            </div>
+        </label>
+    
+        <label class="form__label form-phone">
+            <div class="form__input-wrapper">
+                <input type="tel" name="phone" class="form__input" 
+                inputmode="tel"
+                maxlength="16"
+                required
+                placeholder="@Введіть ваш номер телефона"
+                data-translate="placeholderPhone"
+                autocomplete="off"
+                >
+            </div>
+        </label>
+
+        <label class="form__label form-phone">
+            <div class="form__input-wrapper">
+                <input type="text" name="id" class="form__input" 
+                inputmode="tel"
+                maxlength="5"
+                required
+                placeholder="@Введіть ваш ID партнера"
+                data-translate="ppid"
+                autocomplete="off"
+                >
+            </div>
+        </label>
+        <label class="form__label form-phone">
+            <div class="form__input-wrapper">
+                <input type="text" name="inst" class="form__input" 
+                required
+                placeholder="@Введіть ваш Instagram"
+                data-translate="inst"
+                autocomplete="off"
+                >
+            </div>
+        </label>
+    </legend>
+    <div class="b-modal-btn">
+        <ButtonHearth text="startGameButton" type="submit" />
+    </div>
+</form>
+
+
+<style lang="scss">
+    @use 'src/styles/vars' as *;
+
+    article {
+        @extend %flex-center;
+    }
+
+    .b-modal-btn {
+        display: flex;
+        justify-content: center;
+        font-family: 'MabryPro';
+    }
+
+    :root {
+    --primary-color: #661FFF; /* Основной цвет */
+    --text-color: white;
+    // --placeholder-color: rgba(255, 255, 255, 0.5);
+    --placeholder-color: white;
+    --border-color: #ffffffb3;
+}
+
+/* Основные стили формы */
+form {
+    font-family: 'MabryPro';
+    font-weight: 400;
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 40px;
+    gap: 20px;
+    width: 100%;
+
+    & img {
+        max-width: 320px;
+        
+        @include md() {
+            max-width: 80%;
+        }
+    }
+}
+
+legend {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+
+    @include md() {
+        width: 100%;
+    }
+}
+
+/* Метки */
+.form__label {
+    font-size: 26px;
+}
+
+/* Радио-кнопки */
+.form__radio-group {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.form__radio {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.form__radio input {
+    display: none;
+}
+
+.form__radio-custom {
+    width: 25px;
+    height: 25px;
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.form__radio-custom::after {
+    content: "";
+    background-image: url('data:image/svg+xml,<svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.25 7.64707L12.8333 0L14 1.17647L5.25 10L0 4.70592L1.16667 3.52945L5.25 7.64707Z" fill="white"/></svg>');
+    transform: scale(0);
+    width: 14px;
+    height: 10px;
+    color: var(--border-color);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    transition: transform 0.2s;
+}
+
+.form__radio input:checked + .form__radio-custom::after {
+    transform: scale(1);
+}
+
+/* Поле ввода почты */
+.form__input-wrapper {
+    position: relative;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 5px;
+    display: flex;
+    align-items: center;
+
+    &::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: -2px;
+        height: 2px;
+        width: 0;
+        background-color: var(--accent-color);
+        transition: all .5s ease-in;
+    }
+
+    &:focus-within{
+        &::after{
+            width: 100%;
+            left: 0;
+        }
+        & input::placeholder {
+            color: var(--accent-color);
+        }
+    }
+
+    &:hover input::placeholder {
+        color: var(--accent-color);
+    }
+
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: #ffffff;
+    transition: background-color 5000s ease-in-out 0s;
+    box-shadow: inset 0 0 20px 20px #23232329;
+}
+
+.form__input {
+    width: 100%;
+    background: none;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    color: var(--text-color);
+    padding-left: 10px;
+    text-align: center;font-size: 18px;
+    caret-color: var(--accent-color);
+
+    &::placeholder {
+        font-size: 20px;
+        color: white;
+
+        @include md() {
+            font-size: 16px;
+        }
+     }
+}
+
+/* Скрытие плейсхолдера при вводе */
+.form__input:focus + .form__input-placeholder,
+.form__input:not(:placeholder-shown) + .form__input-placeholder {
+    display: none;
+}
+
+.form-phone {
+    display: grid;
+    grid-template-columns: auto;
+    align-items: flex-end;
+    column-gap: 10px;
+    padding-inline: 20px; 
+}
+
+.form-status {
+    display: grid;
+    grid-template-columns: auto 3fr;
+    align-items: flex-end;
+    gap: 20px;
+    white-space: nowrap;
+    font-size: 20px;
+    margin-bottom: 10px;
+
+    @include md() {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        font-size: 16px;
+    }
+}
+
+.form__radio:hover,
+.form__radio:hover span {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Получаем элементы формы
+    const instInput = document.querySelector<HTMLInputElement>('input[name="inst"]')?.parentElement?.parentElement;
+    const ppidInput = document.querySelector<HTMLInputElement>('input[name="id"]')?.parentElement?.parentElement;
+    const webRadio = document.querySelector<HTMLInputElement>('input[name="partner"][value="web"]');
+    const visitorRadio = document.querySelector<HTMLInputElement>('input[name="partner"][value="visitor"]');
+
+    // Проверяем, что все элементы найдены
+    if (!instInput || !ppidInput || !webRadio || !visitorRadio) {
+        console.error('One or more form elements not found');
+        return;
+    }
+
+    // Функция переключения полей
+    const toggleInputs = (): void => {
+        if (webRadio.checked) {
+            // Показываем поле ID партнера и скрываем Instagram
+            ppidInput.style.display = 'grid';
+            instInput.style.display = 'none';
+        } else if (visitorRadio.checked) {
+            // Показываем поле Instagram и скрываем ID партнера
+            instInput.style.display = 'grid';
+            ppidInput.style.display = 'none';
+        }
+    };
+
+    // Добавляем обработчики для радиокнопок
+    webRadio.addEventListener('change', toggleInputs);
+    visitorRadio.addEventListener('change', toggleInputs);
+
+    // Вызываем функцию при загрузке страницы для установки начального состояния
+    toggleInputs();
+});
+
+
+
+    const nextQuest = document.querySelector('next-quest');
+    const todayDate: Date = new Date();
+    const todayTime: number = todayDate.getTime();
+    
+    // Определяем интерфейс для хранения данных о квестах в localStorage
+    interface QuestData {
+        startDate: number | null;
+        lastQuest: number;
+    }
+    
+    // Получаем данные из localStorage и парсим, если они есть
+    const storedData: string | null = localStorage.getItem('questData');
+    let questData: QuestData = storedData ? JSON.parse(storedData) as QuestData : { startDate: null, lastQuest: 1 };
+    
+    // Если стартовая дата не установлена, задаем текущий день как начало
+    if (!questData.startDate) {
+        questData.startDate = todayTime;
+        localStorage.setItem('questData', JSON.stringify(questData));
+    }
+    
+    // Вычисляем, сколько дней прошло с момента начала выполнения пользователем
+    const userStartDate: Date = new Date(questData.startDate as number);
+    const daysElapsed: number = Math.floor((todayTime - userStartDate.getTime()) / (1000 * 60 * 60 * 24));
+    
+    // Определяем номер текущего задания (от 1 до 14)
+    let currentQuest: number = Math.min(daysElapsed + 1, 14);
+    
+    // Если новое задание доступно, обновляем данные в localStorage
+    if (currentQuest > questData.lastQuest) {
+        questData.lastQuest = currentQuest;
+        localStorage.setItem('questData', JSON.stringify(questData));
+    }
+    
+    // Теперь переменная currentQuest содержит актуальный номер квеста
+    console.log(`Текущее задание: ${currentQuest}`);
+    
+    window.localStorage.setItem('quest', currentQuest)
+    
+    
+    const form = document.querySelector('.form') as HTMLFormElement | null;
+    function currentPath () {
+        if(window.location.href.includes('/ru'))
+            return '/quest/ru'
+        if(window.location.href.includes('/en'))
+            return '/quest/en'
+        else 
+            return'/quest/ua'
+    }
+    
+    if (form) {
+        form.addEventListener('submit', async (e: SubmitEvent) => {
+            e.preventDefault(); 
+    
+            const formData = new FormData(form);
+            const partner = formData.get('partner') as string;
+            const phone = formData.get('phone') as string;
+            const quest = currentQuest.toString();
+    
+            const SCRIPT_URL: string = 'https://script.google.com/macros/s/AKfycbwkK8AyBgU7YHsFAnrSABSs0ymhE7UOfdhDjY3EdWQF0u-kEkzM_0fwwbJkPHGSJzKaag/exec';
+    
+            try {
+                const response: Response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: new URLSearchParams({ partner, phone, quest }),
+                });
+    
+                if (response.ok) {
+                    console.log('Данные успешно отправлены!');
+                    location.href = currentPath();
+                    form.reset(); 
+                } else {
+                    alert('Registration error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+    
+    const phoneInput = document.querySelector('input[name="phone"]');
+    
+    phoneInput?.addEventListener('input', (e) => {
+        const input = e.target as HTMLInputElement;
+        input.value = input.value.replace(/(?!^)\+/g, '').replace(/[^\d+]/g, ''); 
+    });
+</script>

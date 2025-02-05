@@ -1,28 +1,148 @@
 ---
-import Popup from '@components/Popup.astro';
+import Popup from '@components/Modals/Popup.astro';
 import Layout from '../layouts/Layout.astro';
-import Header from '@components/Header.astro';
 import Title from '@components/Title.astro';
 import Footer from '@components/Footer.astro';
 import Subtitle from '@components/Subtitle.astro';
 import Description from '@components/Description.astro';
+import Wrapper from '@components/Wrapper.astro';
 import ButtonHearth from '@components/Buttons/ButtonHearth.astro';
+import LangSwitcher from '@components/LangSwitcher.astro';
+import Logo from '@components/Logo.astro';
+import PopupContentForm from '@components/Modals/PopupContentForm.astro';
+
+const popUps = {
+    startGame: 'startGame'
+}
+
+const { startGame } = popUps;
+
 ---
 
 <Layout>
-    <Header/>
-    <Title type="main"/>
-    <Title type="second"/>
-    <Title type="additional"/>
-    <Footer/>
-    <Subtitle/>
-    <Description/>
-    <ButtonHearth 
-        text="startGameButton"
-        attrs={{
-            "popovertarget": "startGame",
-            "type": "button"
-        }} />
+    <main>
+        <div class="b-header">
+            <div class="b-header__logo">
+                <Logo link="https://onepartners.io"/>
+            </div>
+            <div class="b-header__langs">
+                <LangSwitcher/>
+            </div>
+        </div>
+        <div class="b-welcome">
+            <div class="b-welcome__title">
+                <Title type="main"/>
+            </div>
+            <Subtitle/>
+            <div class="b-description">
+                <Wrapper>
+                    <Description/>
+                    <div class="b-description__btn">
+                        <ButtonHearth 
+                        text="startGameButton" 
+                        attrs={{
+                            "popovertarget": startGame,
+                            "type": "button"
+                            }} 
+                        />
+                    </div>
+                </Wrapper>
+            </div>
+        </div>
+        <div class="b-footer">
+            <Footer/>
+        </div>
+    </main>
+    <Popup target={startGame}>
+        <PopupContentForm/>
+    </Popup>  
 </Layout>
 
-<!-- popovertarget={openModal} -->
+
+<style lang="scss">
+    @use 'src/styles/vars' as *;
+
+    [class*=b-] {
+        width: 100%;
+        z-index: 1;
+    }
+
+    main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+        padding-inline: 20px;
+    }
+
+    .b-header {
+        @extend %flex-row;
+        padding: 50px 47px 20px;
+
+        @include xxl() {
+            padding-inline: 20px;
+        }
+
+        @include md() {
+            padding: 20px;
+            padding-bottom: 60px;
+            justify-content: space-between;
+        }
+
+        &__logo {
+            display: flex;
+            justify-content: flex-end;
+            margin-right: -50px;
+
+            @include md() {
+                margin-right: -35px;
+                justify-content: flex-start;
+            }
+        }
+
+        &__langs {
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+    .b-description {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 100px;
+
+        &__btn {
+            display: flex;
+            justify-content: center;
+            zoom: 0.5;
+            transform: translateY(86%) scale(2);
+            margin-inline: auto;
+
+            @include md() {
+                max-width: 170px;
+                margin-top: -20%;
+            }
+        }
+    }
+
+    .b-welcome {
+        @extend %flex-center;
+        align-items: center;
+
+        &__title {
+            max-width: 800px;
+            aspect-ratio: 80 / 29; 
+
+            @include md() {
+                aspect-ratio: 60 / 26; 
+            }
+        }
+    }
+
+    .b-footer {
+        display: flex;
+        justify-content: center;
+        margin-top: auto;
+        padding-block: 30px;
+    }
+</style>

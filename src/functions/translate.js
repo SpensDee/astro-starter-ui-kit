@@ -54,10 +54,15 @@ const updatePageContent = (translations) => {
     document.querySelectorAll('[data-translate]').forEach(element => {
         const key = element.getAttribute('data-translate');
         if (translations[key]) {
-            element.innerHTML = translations[key]; // Изменяем текст
+            if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                element.placeholder = translations[key]; // Изменяем placeholder
+            } else {
+                element.innerHTML = translations[key]; // Изменяем текст
+            }
         }
     });
 };
+
 
 // Главная функция, которая инициализирует все
 export const translate = () => {

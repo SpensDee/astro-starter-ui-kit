@@ -61,7 +61,11 @@
 
         article {
             max-width: 362px;
-            gap: 40px;
+            column-gap: 40px;
+
+            @include sm() {
+                column-gap: 10px;
+            }
             
             a {
                 text-decoration: none;
