@@ -1,0 +1,138 @@
+---
+import Picture from 'astro/components/Picture.astro';
+
+import d1 from '@assets/d1.png';
+import d2 from '@assets/d2.png';
+import d3 from '@assets/d3.png';
+import d4 from '@assets/d4.png';
+import d5 from '@assets/d5.png';
+import d6 from '@assets/d6.png';
+import d7 from '@assets/d7.png';
+import d8 from '@assets/d8.png';
+import d9 from '@assets/d9.png';
+import d10 from '@assets/d10.png';
+import d11 from '@assets/d11.png';
+import d12 from '@assets/d12.png';
+import d13 from '@assets/d13.png';
+import d14 from '@assets/d14.png';
+
+const imgs = [ d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14 ]
+---
+<ul>
+    {
+        imgs.map((day) => (
+            <li class="prize">
+                <Picture src={day} alt="day" width="110" height="110" formats={["avif", "webp", "png"]}/>
+            </li>
+        ))
+    }
+</ul>
+
+<style lang="scss">
+    @use 'src/styles/vars' as *;
+
+    ul {
+        display: flex;
+        gap: 27px;
+        padding: 80px 28px;
+        width: 1002px;
+        flex-wrap: wrap;
+        justify-content: center;
+        
+        @include xxl() {
+            width: 100%;
+            padding: 29px 38px;
+        }
+
+        @media(max-width: 440px) {
+            padding: 29px 0;
+        }
+
+        @include md() {
+            gap: 20px;
+        }
+    }
+
+    li {
+        width: 110px;
+        aspect-ratio: 1/1;
+        border-radius: 50%;
+        overflow: hidden;
+        background: radial-gradient(circle, #9E52FF 0%, #6400E6 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        position: relative;
+
+        & img {
+            transition: transform 2s;
+        }
+
+        &:hover {
+            img:not(.blocked img) {
+                transform: scale(1.2);
+            }
+        }
+
+        @include md() {
+            width: 90px;
+        }
+
+        &.blocked:before {
+            content: '';
+            background-color: #000000df;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            z-index: 1;
+            inset: 0;
+        }
+
+        &.blocked::after {
+            content: '';
+            background-image: url('/locker.svg');
+            width: 31px;
+            height: 40px;
+            display: block;
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+
+        &.blocked:hover:after {
+            animation: lock 2.8s ease-out;
+        }
+    }
+    @keyframes lock {
+        0% {
+            transform: translate(-50%, -50%);
+        }
+        10% {
+            transform: translate(-50%, -50%) scale(1.2) rotate(10deg);
+        }
+        20% {
+            transform: translate(-50%, -50%) scale(1.2) rotate(-10deg);
+        }
+        30% {
+            transform: translate(-50%, -50%) scale(1.2) rotate(10deg);
+        }
+        40%,
+        100% {
+            transform: translate(-50%, -50%);
+        }
+    }
+</style>
+
+<script>
+    const prizes = document.querySelectorAll<HTMLElement>('.prize');
+    const day = Number(localStorage.getItem('day')) || 0;
+
+    prizes.forEach((prize, index) => {
+        if ((index + 1) >= day) {
+            prize.classList.add('blocked');
+        }
+    });
+</script>

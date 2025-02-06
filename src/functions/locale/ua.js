@@ -28,6 +28,7 @@ const ru = {
     placeholderPhone: 'Введіть ваш номер телефона',
     ppid: 'Введіть ваш ID партнера',
     inst: 'Введіть ваш Instagram',
+    pointer: 'Завдання на сьогодні',
 }
 
 export default ru;

@@ -1,0 +1,682 @@
+---
+import Title from '@components/Title.astro';
+import Picture from 'astro/components/Picture.astro';
+
+import heart from '@assets/heart.png';
+import heartBlock from '@assets/heart-block.png';
+
+const days = [
+    {
+        day: 1,
+        x: 50,
+        y: 17,
+    },
+    {
+        day: 2,
+        x: 67,
+        y: 2,
+    },
+    {
+        day: 3,
+        x: 88,
+        y: 8,
+    },
+    {
+        day: 4,
+        x: 102,
+        y: 25,
+    },
+    {
+        day: 5,
+        x: 97,
+        y: 46,
+    },
+    {
+        day: 6,
+        x: 85,
+        y: 66,
+    },
+    {
+        day: 7,
+        x: 68,
+        y: 83,
+    },
+    {
+        day: 8,
+        x: 50,
+        y: 97,
+    },
+    {
+        day: 9,
+        x: 32,
+        y: 83,
+    },
+    {
+        day: 10,
+        x: 14,
+        y: 66,
+    },
+    {
+        day: 11,
+        x: 2,
+        y: 46,
+    },
+    {
+        day: 12,
+        x: -2,
+        y: 25,
+    },
+    {
+        day: 13,
+        x: 11,
+        y: 8,
+    },
+    {
+        day: 14,
+        x: 32,
+        y: 2,
+    },
+]
+---
+<div class="map">
+    <img class="map__heart" src="/map-path.svg"/>
+    <div class="b-title-box">
+        <Title type="second"/>
+    </div>
+    <ol>
+        {days.map((day) => (
+            <li 
+                class={`heart heart-${day.day || ''}`} 
+                style={{ top: `${day.y}%`, left: `${day.x}%` }}
+            >
+                <span class="opening" style="display: none">
+                    <img class="bless" src="/bless.png" alt="bless" />
+                    <Picture 
+                        src={heart} 
+                        alt="quest" 
+                        width="158" 
+                        height="136" 
+                        formats={["avif", "webp", "png"]} 
+                        draggable="false"
+                    />
+                </span>
+                <span class="blocked">
+                    <Picture 
+                        src={heartBlock} 
+                        alt="quest" 
+                        width="158" 
+                        height="136" 
+                        formats={["avif", "webp", "png"]} 
+                        draggable="false"
+                    />
+                </span>
+            </li>
+        ))}        
+    </ol>
+</div>
+
+<style lang="scss">
+    @use 'src/styles/vars' as *;
+
+        body {
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+    }
+
+    .b-title-box {
+        position: absolute;
+        top: 48%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-width: 495px;
+        width: 100%;
+    }
+    .map {
+        position: relative;
+        margin: 46px 100px;
+
+        & img {
+            user-select: none;
+        }
+    }
+
+    .heart {
+        object-fit: contain;
+        aspect-ratio: 158 / 136;
+    }
+
+    ol {
+        counter-reset: item;
+        position: absolute;
+        inset: 0;
+    li {
+        position: absolute;
+        aspect-ratio: 158 / 136;
+        transform: translate(-50%, -50%);
+        max-width: 160px;
+        overflow: visible;
+
+        &:not(.current-day)::before {
+            content: counter(item, decimal-leading-zero);
+            counter-increment: item;
+            display: inline-block;
+            font-size: 14px;
+            font-weight: 400;
+            position: absolute;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+
+            @include md() {
+                bottom: 16px;
+            }
+
+            @include sm() {
+                font-size: 8px;
+                bottom: 10px;
+            }
+        }
+
+        &::after {
+            content: '';
+            width: 22px;
+            height: 20px;
+            position: absolute;
+            bottom: 1px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: block;
+        }
+
+        &.open:not(.current-day) {
+            &::after {
+                background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 22 20" fill="none"><path d="M21.0242 3.27573C20.9267 3.0699 20.8184 2.8749 20.7101 2.69073C20.267 1.94614 19.6544 1.31669 18.9221 0.853591C18.1898 0.390495 17.3585 0.106847 16.4959 0.0257302C15.5795 -0.0596278 14.6559 0.0680596 13.797 0.398815C12.9382 0.729571 12.1675 1.25444 11.5451 1.9324L10.8409 2.7449L10.1259 1.95406C9.50521 1.27571 8.73696 0.749034 7.88044 0.414689C7.02391 0.0803437 6.10202 -0.0527327 5.1859 0.0257302C4.32525 0.104486 3.49525 0.384834 2.76311 0.844068C2.03097 1.3033 1.41728 1.92851 0.971736 2.66906C0.863402 2.85323 0.755069 3.04823 0.657569 3.25406C0.0749605 4.44888 -0.127313 5.7936 0.0780177 7.10694C0.283348 8.42028 0.886409 9.63909 1.8059 10.5991L10.0609 19.1899C10.162 19.2947 10.2831 19.3781 10.4171 19.4351C10.5512 19.4921 10.6953 19.5214 10.8409 19.5214C10.9865 19.5214 11.1307 19.4921 11.2647 19.4351C11.3987 19.3781 11.5198 19.2947 11.6209 19.1899L19.8651 10.5991C20.7818 9.64209 21.3841 8.42778 21.5913 7.11889C21.7984 5.80998 21.6006 4.46903 21.0242 3.27573ZM14.8709 8.3999L11.6209 11.6499C11.5202 11.7514 11.4004 11.832 11.2684 11.887C11.1363 11.942 10.9947 11.9703 10.8517 11.9703C10.7087 11.9703 10.5671 11.942 10.4351 11.887C10.3031 11.832 10.1833 11.7514 10.0826 11.6499L7.9159 9.48323C7.81489 9.38293 7.73463 9.26372 7.67969 9.13241C7.62475 9.00109 7.59622 8.86024 7.59572 8.71789C7.5947 8.43042 7.70793 8.15431 7.91049 7.95031C8.11304 7.74632 8.38834 7.63114 8.67582 7.63013C8.9633 7.62911 9.23941 7.74234 9.4434 7.9449L10.8517 9.35323L13.3542 6.86156C13.5572 6.65979 13.8318 6.54654 14.118 6.54654C14.4042 6.54654 14.6788 6.65979 14.8817 6.86156C15.0788 7.06549 15.188 7.33854 15.186 7.62211C15.184 7.90568 15.0709 8.17715 14.8709 8.37823V8.3999Z" fill="white"/></svg>');
+                @include md() {
+                    width: 10px;
+                    height: 10px;
+                   background-repeat: no-repeat;
+                   background-size: contain;
+                   bottom: 0;
+                }
+            }
+        }
+    }
+}
+
+.bless {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    width: 200% !important;
+    aspect-ratio: 1 /1;
+    object-fit: contain;
+    animation: blink 2s infinite ease-in-out;
+    display: none;
+    pointer-events: none;
+}
+
+.current-day .bless {
+    display: block;
+}
+
+.current-day {
+    
+    &:hover .opening {
+        animation: pulse 3s ease-out infinite;
+        transition: transform 0.3s ease;
+    }
+}
+
+@keyframes pulse {
+  0%, 14%, 22%, 30%, 100% {
+    transform: scale(1);
+  }
+  6%, 26% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.hearth {
+    .blocked {
+        display: block;
+    }
+    .opening {
+        display: none;
+    }
+}
+
+.heart.open {
+    .blocked {
+        display: none;
+    }
+    .opening {
+        display: block;
+    }
+}
+
+.heart {
+    cursor: pointer;
+}
+
+.heart .blocked {
+    
+    &::before {
+        content: '';
+        background-image: url('/locker.svg');
+        width: 31px;
+        height: 40px;
+        display: block;
+        position: absolute;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    &:hover::before {
+        animation: lock 2.8s ease-out;
+    }
+}
+
+
+
+@keyframes lock {
+    0% {
+        transform: translate(-50%, -50%);
+    }
+    10% {
+        transform: translate(-50%, -50%) scale(1.2) rotate(10deg);
+    }
+    20% {
+        transform: translate(-50%, -50%) scale(1.2) rotate(-10deg);
+    }
+    30% {
+        transform: translate(-50%, -50%) scale(1.2) rotate(10deg);
+    }
+    40%,
+    100% {
+        transform: translate(-50%, -50%);
+    }
+}
+
+    svg {
+        overflow: visible;  
+    }
+
+    @keyframes bounce {
+        0% {
+            transform: translateY(0);
+        }
+        50% {
+            // transform: translateY(-6px);
+            transform: translate3d(0, -6px, 0);
+        }
+        100% {
+            transform: translateY(0);
+        }
+    }
+
+
+@include xxl() {
+    .map {
+        margin: 36px 83px;
+
+        & img,
+        & .heart {
+            width: 100% ;
+            height: auto ;
+        }
+        & ol {
+            & li {
+                max-width: 130px;
+            }
+        }
+    }
+}
+
+@include md() {
+    .map {
+        margin: 26px 52px;
+
+        & ol {
+            & li {
+                max-width: 90px;
+            }
+        }
+    }
+    .heart .blocked:before {
+        width: 12px;
+        height: 25px;
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+}
+
+@include sm() {
+    .map {
+        margin: 26px 52px;
+
+        & ol {
+            & li {
+                max-width: 70px;
+            }
+        }
+    }
+}
+
+@media(max-width: 440px) {
+    .map {
+        margin: 14px 36px;
+
+        & ol {
+            & li {
+                max-width: 50px;
+            }
+        }
+    }
+}
+
+@media(max-width: 370px) {
+    .map {
+        margin: 14px 23px;
+    }
+}
+</style>
+
+<script>
+    
+const partners = {
+    onepartners: {
+        src: '/logo.svg',
+        id: 'onepartners'
+    },
+    semproConference: {
+        src: '/sempro.svg',
+        id: 'semproConference'
+    },
+    growePartners: {
+        src: '/grow.svg',
+        id: 'growePartners'
+    },
+    hollyTraff: {
+        src: '/holy.png',
+        id: 'hollyTraff'
+    },
+    arbitrageUp: {
+        src: '/arbitrageup.svg',
+        id: 'arbitrageUp'
+    },
+    oneMedia: {
+        src: '/OneMedia.png',
+        id: 'oneMedia'
+    }
+};
+
+function getLogoSizes() {
+    const isLargeScreen = matchMedia('(min-width: 720px)').matches;
+    const isMediumScreen = matchMedia('(min-width: 440px)').matches;
+
+    return {
+        onepartners: isLargeScreen ? '35px' : isMediumScreen ? '15px' : '10px',
+        semproConference: isLargeScreen ? '96px' : isMediumScreen ? '50px' : '33px',
+        growePartners: isLargeScreen ? '100px' : isMediumScreen ? '60px' : '40px',
+        hollyTraff: isLargeScreen ? '75px' : isMediumScreen ? '46px' : '30px',
+        arbitrageUp: isLargeScreen ? '53px' : isMediumScreen ? '20px' : '13px',
+        oneMedia: isLargeScreen ? '35px' : isMediumScreen ? '18px' : '12px',
+        default: isLargeScreen ? '35px' : isMediumScreen ? '15px' : '10px'
+    };
+}
+
+
+let logoSizes = getLogoSizes(); 
+
+    const days = {
+        1: {
+            open: true,
+            logo: partners.onepartners.src,
+            task: '',
+            link: ''
+        },
+        2: {
+            open: true,
+            logo: partners.semproConference.src,
+            task: '',
+            link: ''
+        },
+        3: {
+            open: true,
+            logo: partners.onepartners.src,
+            task: '',
+            link: ''
+        },
+        4: {
+            open: true,
+            logo: partners.onepartners.src,
+            task: '',
+            link: ''
+        },
+        5: {
+            open: true,
+            logo: partners.growePartners.src,
+            task: '',
+            link: ''
+        },
+        6: {
+            open: true,
+            logo: partners.hollyTraff.src,
+            task: '',
+            link: ''
+        },
+        7: {
+            open: true,
+            logo: partners.onepartners.src,
+            task: '',
+            link: ''
+        },
+        8: {
+            open: true,
+            logo: partners.arbitrageUp.src,
+            task: '',
+            link: ''
+        },
+        9: {
+            open: true,
+            logo: partners.onepartners.src,
+            task: '',
+            link: ''
+        },
+        10: {
+            open: true,
+            logo: partners.oneMedia.src,
+            task: '',
+            link: ''
+        },
+        11: {
+            open: true,
+            logo: partners.onepartners.src,
+            task: '',
+            link: ''
+        },
+        12: {
+            open: false,
+            logo: partners.onepartners.src,
+            task: '',
+            link: ''
+        },
+        13: {
+            open: false,
+            logo: partners.onepartners.src,
+            task: '',
+            link: ''
+        },
+        14: {
+            open: false,
+            logo: partners.onepartners.src,
+            task: '',
+            link: ''
+        }
+    }
+
+    const hearths: NodeListOf<HTMLElement> = document.querySelectorAll('.heart');
+
+ {/* начальный рендер */}
+    const openDay = (day: HTMLElement) => {
+        day.classList.add('open')
+}
+
+
+
+// Обновляем при изменении размера окна
+matchMedia('(min-width: 560px)').addEventListener('change', () => {
+    logoSizes = getLogoSizes();
+});
+
+function setLogoSize(status: string) {
+    return logoSizes[status] || logoSizes.default;
+}
+
+Object.entries(days).forEach(([dayNumber, dayData], index) => {
+    if (dayData.open) {
+        openDay(hearths[index]);
+
+        const logo = document.createElement('img');
+        hearths[index].appendChild(logo);
+
+        // Поиск партнёра по пути к лого
+        const partnerEntry = Object.values(partners).find(partner => partner.src === dayData.logo);
+        const partnerId = partnerEntry ? partnerEntry.id : 'default';
+
+        logo.src = dayData.logo;
+        logo.alt = 'logo';
+        logo.classList.add('partner-logo');
+        logo.style.cssText = `
+            position: absolute;
+            top: 44%;
+            left: 50%;
+            max-height: 50px;
+            object-fit: contain;
+            z-index: 2;
+            transform: translate(-50%, -50%);
+            width: ${setLogoSize(partnerId)};
+        `;
+    }
+});
+
+    hearths.forEach(hearth => {
+        if (hearth.classList.contains('open')) {
+            const blockedElement = hearth.querySelector('.blocked');
+            const openingElement = hearth.querySelector('.opening');
+
+            if (blockedElement instanceof HTMLElement) {
+                blockedElement.style.display = 'none';
+            }
+
+            if (openingElement instanceof HTMLElement) {
+                openingElement.style.display = 'block';
+            }
+        }
+    });
+
+{/* вычисляем текущее/последнее открытое задание */}
+const openingDays: NodeListOf<HTMLElement> = document.querySelectorAll('.open');
+const lastOpenDay = openingDays[openingDays.length - 1];
+lastOpenDay.classList.add('current-day');
+
+const lastOpenDayIndex = Object.keys(days)
+  .reverse() 
+  .find((key) => days[parseInt(key, 10)].open === true);
+
+if (lastOpenDayIndex) {
+  const lastOpenDay = parseInt(lastOpenDayIndex, 10); 
+  localStorage.setItem('day', lastOpenDay.toString());
+}
+
+lastOpenDay.insertAdjacentHTML('beforeend',`
+<div class="watch-quest">
+    ${matchMedia('(min-width: 720px)').matches ? '<span class="btn-open-quest" data-translate="pointer">Завдання на сьогодні</span>' : ''}
+    <svg  width="54" height="68" viewBox="0 0 54 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g class="point">
+        <path d="M19.349 41.6282C20.351 42.6313 21.5408 43.4272 22.8504 43.9702C24.1601 44.5132 25.5639 44.7927 26.9816 44.7927C28.3994 44.7927 29.8032 44.5132 31.1129 43.9702C32.4225 43.4272 33.6123 42.6313 34.6143 41.6282L48.0724 28.1679C53.3846 22.8549 54.7325 14.366 50.4856 8.03717C49.2013 6.09341 47.5001 4.46021 45.5057 3.25627C43.5101 2.05167 41.2712 1.30711 38.9518 1.07676C36.6323 0.84641 34.2907 1.13606 32.0973 1.92464C30.21 2.60317 28.4732 3.63641 26.9792 4.96559C25.484 3.64479 23.7482 2.61938 21.8635 1.94743C19.6724 1.16624 17.335 0.882345 15.0206 1.11632C12.7063 1.35029 10.4729 2.09628 8.48248 3.3002C6.49311 4.50346 4.79615 6.13404 3.51441 8.07389C-0.732527 14.4028 0.615377 22.8916 5.92756 28.2046L19.349 41.6282Z" fill="#FF0004" stroke="white" stroke-width="2"/>
+        <path d="M32.7656 23.8871C33.698 23.8871 34.4681 24.1869 35.0759 24.7866C35.692 25.378 36 26.1318 36 27.0481C36 27.9643 35.692 28.7222 35.0759 29.3219C34.4598 29.9217 33.6897 30.2215 32.7656 30.2215H29.6645V32.6328H27.2542V23.8871H32.7656ZM32.4783 28.11C32.7864 28.11 33.0361 28.0142 33.2276 27.8227C33.4274 27.6228 33.5273 27.3646 33.5273 27.0481C33.5273 26.8481 33.4815 26.6691 33.39 26.5108C33.3067 26.3442 33.186 26.2151 33.0278 26.1235C32.8696 26.0319 32.6865 25.9861 32.4783 25.9861H29.6645V28.11H32.4783Z" fill="#EDFF00"/>
+        <path d="M34.4949 31.1278H36V32.6328H34.4949V31.1278Z" fill="#EDFF00"/>
+        <path d="M33.3791 14.6328H36V23.3786H33.7715L29.8752 18.6309V23.3786H27.2542V14.6328H29.6089L33.3791 19.2181V14.6328Z" fill="white"/>
+        <path d="M20.3946 30.5366H26.7458V32.6328H18V23.8871H26.7458V25.9833H20.3946V27.2558H26.7458V29.239H20.3946V30.5366Z" fill="white"/>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M25.803 22.5272C25.7999 22.5299 25.7969 22.5325 25.7938 22.5352C25.1445 21.8375 24.2844 21.3387 23.315 21.1405C24.0585 20.788 24.5727 20.0303 24.5727 19.1525C24.5727 18.374 24.1683 17.6901 23.5583 17.2994C23.4358 17.2209 23.3517 17.0903 23.3517 16.9447V16.4177C23.3517 16.2622 23.1621 16.1862 23.0548 16.2987V16.2987C22.9759 16.3814 22.8399 16.3658 22.7818 16.2675L22.6684 16.0758C22.5365 15.8526 22.2135 15.8526 22.0816 16.0758L21.9682 16.2675C21.9101 16.3658 21.7741 16.3814 21.6952 16.2987V16.2987C21.5879 16.1862 21.3983 16.2622 21.3983 16.4177V16.9447C21.3983 17.0903 21.3142 17.2209 21.1917 17.2994C20.5817 17.6901 20.1773 18.374 20.1773 19.1525C20.1773 20.0303 20.6915 20.788 21.435 21.1405C20.4656 21.3387 19.6055 21.8375 18.9562 22.5352C18.9531 22.5325 18.9501 22.5299 18.947 22.5272C18.9698 22.5489 18.9929 22.5702 19.0164 22.5912C18.6397 22.2545 18.348 21.8255 18.1751 21.3381C18 20.8445 18 20.2298 18 19.0005C18 17.7711 18 17.1564 18.1751 16.6629C18.4825 15.7962 19.1654 15.1145 20.0334 14.8076C20.5278 14.6328 21.1436 14.6328 22.375 14.6328C23.6064 14.6328 24.2222 14.6328 24.7166 14.8076C25.5846 15.1145 26.2675 15.7962 26.5749 16.6629C26.75 17.1564 26.75 17.7711 26.75 19.0005C26.75 20.2298 26.75 20.8445 26.5749 21.3381C26.4128 21.7952 26.1462 22.2009 25.803 22.5272Z" fill="white"/>
+        </g>
+        <path d="M22.2787 16.3312C22.2608 16.2985 22.2608 16.2589 22.2787 16.2261V16.2261C22.3203 16.1499 22.4297 16.1499 22.4713 16.2261V16.2261C22.4892 16.2589 22.4892 16.2985 22.4713 16.3312V16.3312C22.4297 16.4075 22.3203 16.4075 22.2787 16.3312V16.3312Z" fill="white"/>
+        <path d="M26.9457 61.9993C29.5476 61.9993 31.9367 61.7366 33.7044 61.2947C34.5806 61.0756 35.3606 60.7989 35.9456 60.4531C36.4637 60.1469 37.161 59.5854 37.161 58.6955C37.161 57.8056 36.4637 57.2441 35.9456 56.9379C35.3606 56.5921 34.5806 56.3153 33.7044 56.0963C31.9367 55.6544 29.5476 55.3917 26.9457 55.3917C24.3439 55.3917 21.9548 55.6544 20.187 56.0963C19.3108 56.3153 18.5309 56.5921 17.9458 56.9379C17.4277 57.2441 16.7305 57.8056 16.7305 58.6955C16.7305 59.5854 17.4277 60.1469 17.9458 60.4531C18.5309 60.7989 19.3108 61.0756 20.187 61.2947C21.9548 61.7366 24.3439 61.9993 26.9457 61.9993Z" fill="#FF0004" stroke="white" stroke-width="2"/>
+        <path d="M26.9463 66.6069C32.7486 66.6069 38.0439 65.8262 41.9232 64.5341C43.8576 63.8898 45.4954 63.1002 46.6701 62.1741C47.8338 61.2567 48.6806 60.0888 48.6806 58.6955C48.6806 57.3021 47.8338 56.1343 46.6701 55.2169C45.4954 54.2908 43.8576 53.5012 41.9232 52.8569C38.0439 51.5648 32.7486 50.784 26.9463 50.784C21.1439 50.784 15.8487 51.5648 11.9693 52.8569C10.0349 53.5012 8.39712 54.2908 7.22241 55.2169C6.05867 56.1343 5.21191 57.3021 5.21191 58.6955C5.21191 60.0888 6.05867 61.2567 7.22241 62.1741C8.39712 63.1002 10.0349 63.8898 11.9693 64.5341C15.8487 65.8262 21.1439 66.6069 26.9463 66.6069ZM26.9463 56.2398C27.7955 56.2398 30.3106 56.2806 32.5908 56.7146C33.7401 56.9333 34.7462 57.2371 35.4403 57.6338C36.1383 58.0329 36.3134 58.3929 36.3134 58.6955C36.3134 58.998 36.1383 59.3581 35.4403 59.7571C34.7462 60.1538 33.7401 60.4577 32.5908 60.6764C30.3106 61.1103 27.7955 61.1512 26.9463 61.1512C26.097 61.1512 23.5819 61.1103 21.3017 60.6764C20.1525 60.4577 19.1463 60.1538 18.4522 59.7571C17.7542 59.3581 17.5791 58.998 17.5791 58.6955C17.5791 58.3929 17.7542 58.0329 18.4522 57.6338C19.1463 57.2371 20.1525 56.9333 21.3017 56.7146C23.5819 56.2806 26.097 56.2398 26.9463 56.2398Z" fill="#FF0004" stroke="white" stroke-width="2"/>
+    </svg>
+</div>
+<style>
+    svg {
+        overflow: visible;
+        
+    }
+    .watch-quest {
+		display: flex;
+		align-items: flex-end;
+		gap: 10px;
+        position: absolute;
+        bottom: 0 ;
+        left: calc(50% + 30px);
+        transform: translateX(-50%);
+        z-index: 4;
+    }
+
+    .watch-quest .btn-open-quest {
+			color: white;
+			display: inline-block;
+			font-size: 14px;
+			border-radius: 86px;
+			background: #6F02FA;
+			white-space: nowrap;
+			line-height: 1;
+			padding: 10px 15px;
+			border: 2px solid white;
+            transition: transform .3s;
+            cursor: pointer;
+		}
+        .point {
+            width: 50px;
+            transform-origin: center; 
+            animation: bounce 1.6s infinite ease-in-out 2s;
+            will-change: transform;
+    }
+
+    .current-day:hover .btn-open-quest,
+    .btn-open-quest:hover {
+        border-color: yellow;
+        color: yellow;
+    }
+        @media(max-width: 720px) {
+            svg {
+                width: 25px;
+                height: 32px;
+            }
+
+           .watch-quest {
+                left: 50%;
+            }
+        }
+
+</style>`)
+
+
+
+</script>

@@ -17,7 +17,7 @@ const { type } = Astro.props;
 )}
 
 {type === 'additional' && (
-    <h1 data-translate="additionalTitle">
+    <h1 data-translate="additionalTitle" class="additional-title">
         <picture>
             <source srcset="/title3-ua-mob.svg" media="(max-width: 720px)" />
             <img src="/title3-ua.svg" width="100%" alt="щоденні призи"/>
@@ -32,4 +32,7 @@ const { type } = Astro.props;
         pointer-events: none;
         user-select: none;
     }   
+    .additional-title {
+        max-width: 900px;
+    }
 </style>

@@ -1,5 +1,4 @@
 ---
-import Background from '@components/Background.astro';
 import { AstroFont } from "astro-font";
 import './main.scss';
 ---
@@ -81,11 +80,7 @@ import './main.scss';
 		<meta name="generator" content={Astro.generator} />
 		<title>Valentine Quest</title>
 	</head>
-	
-	<Background>
 		<slot />
-	</Background>
-
 	<script>
 		import { translate } from 'src/functions/translate.js';
 		translate()

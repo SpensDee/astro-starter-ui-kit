@@ -28,6 +28,7 @@ const en = {
     placeholderPhone: 'Enter your phone number',
     ppid: 'Enter your partner ID',
     inst: 'Enter your Instagram',
+    pointer: 'Daily quest',
 }
 
 export default en;

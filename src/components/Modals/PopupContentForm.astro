@@ -58,7 +58,7 @@ import ButtonHearth from "@components/Buttons/ButtonHearth.astro";
         </label>
     </legend>
     <div class="b-modal-btn">
-        <ButtonHearth text="startGameButton" type="submit" />
+        <ButtonHearth text="startGameButton" type="submit" link="/play"/>
     </div>
 </form>
 
@@ -325,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Если стартовая дата не установлена, задаем текущий день как начало
     if (!questData.startDate) {
         questData.startDate = todayTime;
-        localStorage.setItem('questData', JSON.stringify(questData));
+        // localStorage.setItem('questData', JSON.stringify(questData));
     }
     
     // Вычисляем, сколько дней прошло с момента начала выполнения пользователем
@@ -338,7 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Если новое задание доступно, обновляем данные в localStorage
     if (currentQuest > questData.lastQuest) {
         questData.lastQuest = currentQuest;
-        localStorage.setItem('questData', JSON.stringify(questData));
+        // localStorage.setItem('questData', JSON.stringify(questData));
     }
     
     // Теперь переменная currentQuest содержит актуальный номер квеста

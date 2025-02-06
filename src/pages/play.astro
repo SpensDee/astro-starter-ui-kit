@@ -1,0 +1,134 @@
+---
+import Popup from '@components/Modals/Popup.astro';
+import Layout from '../layouts/Layout.astro';
+import Title from '@components/Title.astro';
+import Footer from '@components/Footer.astro';
+import Wrapper from '@components/Wrapper.astro';
+import LangSwitcher from '@components/LangSwitcher.astro';
+import PopupQuest from '@components/Modals/PopupQuest.astro';
+import Background from '@components/Background.astro';
+import Map from '@components/Game/Map.astro';
+import Dayli from '@components/Dayli.astro';
+import OpenModalBtn from '@components/Buttons/OpenModalBtn.astro';
+
+const popUps = {
+    apply: 'apply',
+    complete: 'complete'
+}
+
+const { apply, complete } = popUps;
+
+---
+
+<Layout>
+    <Background playPage={true}>
+        <main>
+            <div class="b-header">
+                <div class="b-header__langs">
+                    <LangSwitcher/>
+                </div>
+            </div>
+            <div class="b-map">
+                <Map/>
+            </div>
+            <div class="b-mobile-btn">
+                <OpenModalBtn/>
+            </div>
+            <Title type="additional"/>
+            <div class="b-prizes">
+                <Wrapper>
+                    <Dayli/>
+                </Wrapper>
+            </div>
+            <div class="b-footer">
+                <Footer/>
+            </div>
+        </main>
+        <Popup target={apply}>
+            <PopupQuest/>
+        </Popup>  
+        <Popup target={complete}>
+            <PopupQuest/>
+        </Popup>  
+    </Background>
+</Layout>
+
+
+<style lang="scss">
+    @use 'src/styles/vars' as *;
+
+    [class*=b-] {
+        width: 100%;
+        z-index: 1;
+    }
+
+    .b-header {
+        @extend %flex-row;
+        padding: 45px 67px 0;
+        justify-content: flex-end;
+
+        @include xxl() {
+            padding-inline: 20px;
+        }
+
+        @include md() {
+            padding: 20px;
+        }
+
+        &__langs {
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+
+    main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+        padding-inline: 20px;
+    }
+
+    .b-footer {
+        display: flex;
+        justify-content: center;
+        margin-top: auto;
+        padding-block: 30px;
+    }
+
+    .b-map {
+        margin-bottom: 100px;
+        width: auto;
+
+        @include md() {
+            margin-bottom: 32px;
+        }
+    }
+    .b-prizes {
+        margin-bottom: 75px;
+        flex: 1;
+        max-width: 1080px;
+        padding-inline: 15px;
+        display: flex;
+        justify-content: center;
+
+        @include md() {
+            margin-bottom: 175px;
+        }
+
+        @media(max-width: 440px) {
+            padding-inline: 0;
+        }
+    }
+
+    .b-mobile-btn {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin-bottom: 500px;
+
+        @media(min-width: 720px) {
+            display: none;
+        }
+    }
+</style>

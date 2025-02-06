@@ -1,13 +1,18 @@
 ---
 import { Picture } from "astro:assets";
 import button from '@assets/button.png';
-const { text, attrs } = Astro.props;
+const { text, attrs, link } = Astro.props;
 ---
-<button class="button-start" 
+{!link ? (<button class="button-start" 
     {...attrs}>
 	<Picture src={button} alt="button" width="216" height="178" formats={["avif", "webp", "png"]}/>
     <span data-translate={text}>Розпочати гру</span>
-</button>
+</button>) : (<a class="button-start" href={link}
+    {...attrs}>
+	<Picture src={button} alt="button" width="216" height="178" formats={["avif", "webp", "png"]}/>
+    <span data-translate={text}>Розпочати гру</span>
+</a>)
+}
 
 <style lang="scss">
     @use 'src/styles/vars' as *;

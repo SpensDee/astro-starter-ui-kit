@@ -1,4 +1,7 @@
 ---
+import Picture from 'astro/components/Picture.astro';
+const { playPage } = Astro.props;
+
 import { getRandomNumber } from './../functions/random';
 
 import decor1 from '../assets/decor-1.png';
@@ -7,7 +10,13 @@ import decor3 from '../assets/decor-3.png';
 import decor4 from '../assets/decor-4.png';
 import decor5 from '../assets/decor-5.png';
 import decor6 from '../assets/decor-6.png';
-import Picture from 'astro/components/Picture.astro';
+import decor7 from '../assets/decor-7.png';
+import decor8 from '../assets/decor-8.png';
+import decor9 from '../assets/decor-9.png';
+import decor10 from '../assets/decor-10.png';
+import decor11 from '../assets/decor-11.png';
+import decor12 from '../assets/decor-12.png';
+
 
 const decorList = [
     {
@@ -36,7 +45,7 @@ const decorList = [
     }, 
     {
         link: decor5,
-        width: 33.5,
+        width: 28.5,
         top: 39,
         left: 66,
     }, 
@@ -47,32 +56,65 @@ const decorList = [
         left: 78,
     },
 ]
+
+const decorListPlayPage = [
+    {
+        link: decor7,
+        width: 21,
+        top: 0,
+        left: 0,
+    }, 
+    {
+        link: decor8,
+        width: 38,
+        top: -16,
+        left: -8,
+    }, 
+    {
+        link: decor9,
+        width: 18,
+        top: 62,
+        left: 1,
+    }, 
+    {
+        link: decor10,
+        width: 34,
+        top: 4,
+        left: 66,
+    }, 
+    {
+        link: decor11,
+        width: 21,
+        top: 37,
+        left: 79,
+    }, 
+    {
+        link: decor12,
+        width: 16,
+        top: 6,
+        left: 78,
+    },
+]
 ---
 
-<body>
+<body class:list={{'play' : playPage}}>
     <div class="decor-axios">
-        <div class="decor-wrapper">
-            {decorList.map((img, index) => {
-    
-                const { width: size, link, top, left } = img;
-    
-                return (
-                <Picture 
-                    src={link} 
-                    alt="decor" 
-                    style={{
-                        width: `${size}%`, 
-                        top: `${top}%`,
-                        left: `${left}%`,
-                        animationDuration: `${getRandomNumber(3, 5)}s`,
-                        animationDelay: `${getRandomNumber(0.1, 0.7)}s`,
-                    }}
-                    class={`decor decor-${index}`}
-                    formats={['avif', 'webp', 'png']}
-                    decoding="async"/>
-                )
-            })}
-        </div>
+            {(playPage ? decorListPlayPage : decorList).map(({ width: size, link, top, left }, index) => (
+            <Picture 
+                src={link} 
+                alt="decor" 
+                style={{
+                    width: `${size}%`, 
+                    top: `${top}%`,
+                    left: `${left}%`,
+                    animationDuration: `${getRandomNumber(3, 5)}s`,
+                    animationDelay: `${getRandomNumber(0.1, 0.7)}s`,
+                }}
+                class={`decor decor-${index}`}
+                formats={['avif', 'webp', 'png']}
+                decoding="async"
+            />
+        ))}
     </div>
     <slot/>
 </body>
@@ -91,7 +133,7 @@ const decorList = [
             background-position: center;
         }
 
-        &.game {
+        &.play {
             background-image: url('/BG2.progressive.jpg');
 
             @media(max-width: 600px) {
@@ -109,6 +151,8 @@ const decorList = [
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        // pointer-events: none;
+        // user-select: none;
 
         @include xxl() {
             width: 1220px;
@@ -117,10 +161,17 @@ const decorList = [
         }
 
         @include md() {
+            display: block;
             width: 560px;
             aspect-ratio: initial;
             height: 100%;
             top: 50%;
+        }
+    }
+
+    body:not(.play) {
+        .decor-axios {
+            display: contents;
         }
     }
 
@@ -132,6 +183,7 @@ const decorList = [
         object-fit: cover;
         height: auto;
         // pointer-events: none;
+        // user-select: none;
         z-index: -1;
 
         @include md() {
@@ -184,3 +236,4 @@ const decorList = [
         }
     }
 </style>
+
