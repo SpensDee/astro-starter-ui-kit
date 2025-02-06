@@ -29,6 +29,10 @@ const en = {
     ppid: 'Enter your partner ID',
     inst: 'Enter your Instagram',
     pointer: 'Daily quest',
+    go: "Go link",
+    gracTitle: "Congratulations! <br> Task completed!",
+    gracText: "Collect your Valentine's card of the day from your personal manager",
+    complete: "ok"
 }
 
 export default en;

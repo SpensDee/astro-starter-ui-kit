@@ -18,20 +18,24 @@ import d14 from '@assets/d14.png';
 
 const imgs = [ d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14 ]
 ---
-<ul>
+<div>
     {
         imgs.map((day) => (
-            <li class="prize">
+            <button class="prize" popovertarget="prize" popovertargetaction="show">
                 <Picture src={day} alt="day" width="110" height="110" formats={["avif", "webp", "png"]}/>
-            </li>
+            </button>
         ))
     }
-</ul>
+</div>
 
 <style lang="scss">
     @use 'src/styles/vars' as *;
 
-    ul {
+    .prize.blocked {
+        pointer-events: none;
+    }
+
+    div {
         display: flex;
         gap: 27px;
         padding: 80px 28px;
@@ -53,7 +57,7 @@ const imgs = [ d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14 ]
         }
     }
 
-    li {
+    button {
         width: 110px;
         aspect-ratio: 1/1;
         border-radius: 50%;
@@ -101,28 +105,10 @@ const imgs = [ d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14 ]
             transform: translate(-50%, -50%);
             z-index: 2;
         }
-
-        &.blocked:hover:after {
-            animation: lock 2.8s ease-out;
-        }
     }
-    @keyframes lock {
-        0% {
-            transform: translate(-50%, -50%);
-        }
-        10% {
-            transform: translate(-50%, -50%) scale(1.2) rotate(10deg);
-        }
-        20% {
-            transform: translate(-50%, -50%) scale(1.2) rotate(-10deg);
-        }
-        30% {
-            transform: translate(-50%, -50%) scale(1.2) rotate(10deg);
-        }
-        40%,
-        100% {
-            transform: translate(-50%, -50%);
-        }
+
+    .prize {
+        cursor: pointer;
     }
 </style>
 

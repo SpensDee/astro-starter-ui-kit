@@ -1,0 +1,96 @@
+---
+const { closeBtn, target } = Astro.props;
+---
+
+<dialog id={target} popover="auto">
+  <div class="popup-wrapper">
+    <div class="popup-content">
+        <slot/>
+    </div>
+  </div>
+</dialog>
+
+<style lang="scss">
+@use 'src/styles/vars' as *;
+
+:root {
+    --popup-size: 600px;
+    --popup-backdrop: #00000092;
+    --popup-padding: 30px;
+    --popup-border-radius: 16px;
+}
+
+%size {
+    width: 35px;
+    height: 35px;
+}
+
+dialog {
+    transition: opacity 0.2s, transform 0.2s, display 0.2s allow-discrete;
+    max-width: min(var(--popup-size), calc(100vw - 40px));
+    overscroll-behavior: contain;
+    opacity: 0;
+    transform: scale(0.8);
+    padding: var(--popup-padding);
+    border: none;
+    border-radius: var(--popup-border-radius);
+    color: white;
+    font-family: 'Mabry Pro';
+    font-weight: 400;
+    position: relative;
+    max-height: 90dvh;
+    font-size: 26px;
+
+    @include md() {
+        padding: 20px;
+        font-size: 16px;
+    }
+}
+
+.popup-wrapper {
+    width: 100%;
+    height: auto;
+}
+
+dialog:popover-open {
+    opacity: 1;
+    transform: scale(1);
+    overflow: auto;
+}
+
+@starting-style {
+    dialog:popover-open {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+}
+
+dialog::backdrop {
+    background: var(--popup-backdrop);
+    backdrop-filter: blur(5px);
+}
+
+.popup-wrapper .close-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 3.7%;
+    left: 89.5%;
+    @extend %size;
+    border-left: 1px solid white;
+    transition: all 0.2s;
+    cursor: pointer;
+    outline: transparent;
+
+    & img {
+        transition: transform 0.2s;
+        transform-origin: center;
+    }
+
+    @media (hover: hover) {
+        &:hover img {
+            transform: scale(1.2);
+        }
+    }
+}
+</style>

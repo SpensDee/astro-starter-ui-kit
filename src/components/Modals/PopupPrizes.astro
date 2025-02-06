@@ -1,27 +1,12 @@
----
-import ButtonHearth from '@components/Buttons/ButtonHearth.astro';
-const popUps = {
-    complete: 'complete'
-}
-const { complete } = popUps;
----
-
 <section>
-    <article class="popup-quest-content">
+    <article class="popup-quest-content2">
     </article>
-    <div class="b-qb">
-        <ButtonHearth 
-        text="go" 
-        attrs={{
-            "popovertarget": complete,
-            "type": "button",
-            }} 
-        />
+    <div class="b-qb2">
     </div>
 </section>
 
 <style lang="scss">
-    .b-qb {
+    .b-qb2 {
         display: flex;
         justify-content: center;
         width: 100%;
@@ -47,7 +32,7 @@ const { complete } = popUps;
             top: 0;
             left: 0;
             width: 100%;
-            height: 80%;
+            height: 100%;
             background-color: #6D06F2;
             z-index: -1;
             border-radius: var(--popup-border-radius);
@@ -60,13 +45,13 @@ const { complete } = popUps;
 <script>
 import { partners, days } from 'src/functions/data';
 
-const questContent = document.querySelector('.popup-quest-content') as HTMLElement | null;
+const questContent = document.querySelector('.popup-quest-content2') as HTMLElement | null;
 
 let currentIndex = null; // Глобальная переменная для хранения текущего индекса
 
 function createQuest(questIndex, translateLang) {
     if (questContent && questIndex && translateLang) {
-        const index = Number(questIndex);
+        const index = Number(questIndex -1);
         currentIndex = index; // Сохраняем индекс в глобальную переменную
 
         if (days[index]) {
@@ -109,14 +94,14 @@ function createQuest(questIndex, translateLang) {
             console.error(`Квест с индексом ${index} не найден в days`);
         }
     } else {
-        console.error('Ошибка: либо .popup-quest-content не найден, либо questIndex не установлен');
+        console.error('Ошибка: либо .popup-quest-content2 не найден, либо questIndex не установлен');
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     setQuest();
 
-    document.querySelector('.b-qb')?.addEventListener('click', () => {
+    document.querySelector('.b-qb2')?.addEventListener('click', () => {
         if (currentIndex !== null && days[currentIndex]?.link) {
             window.open(days[currentIndex].link, '_blank', 'noopener,noreferrer');
         } else {

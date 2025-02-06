@@ -29,6 +29,10 @@ const ru = {
     ppid: 'Введіть ваш ID партнера',
     inst: 'Введіть ваш Instagram',
     pointer: 'Завдання на сьогодні',
+    go: "Перейти",
+    gracTitle: "Вітаємо! <br> Завдання виконане!",
+    gracText: "Забери свою валентинку дня у персонального менеджера",
+    complete: "ok"
 }
 
 export default ru;

@@ -1,5 +1,5 @@
 ---
-import Popup from '@components/Modals/Popup.astro';
+import PopupSecond from '@components/Modals/PopupSecond.astro';
 import Layout from '../layouts/Layout.astro';
 import Title from '@components/Title.astro';
 import Footer from '@components/Footer.astro';
@@ -10,13 +10,16 @@ import Background from '@components/Background.astro';
 import Map from '@components/Game/Map.astro';
 import Dayli from '@components/Dayli.astro';
 import OpenModalBtn from '@components/Buttons/OpenModalBtn.astro';
+import PopupComplete from '@components/Modals/popupComplete.astro';
+import PopupPrizes from '@components/Modals/PopupPrizes.astro';
 
 const popUps = {
     apply: 'apply',
-    complete: 'complete'
+    complete: 'complete',
+    prize: 'prize'
 }
 
-const { apply, complete } = popUps;
+const { apply, complete, prize } = popUps;
 
 ---
 
@@ -32,7 +35,10 @@ const { apply, complete } = popUps;
                 <Map/>
             </div>
             <div class="b-mobile-btn">
-                <OpenModalBtn/>
+                <OpenModalBtn attrs={{
+                    popovertarget: apply,
+                    popovertargetaction: 'show',
+                }}/>
             </div>
             <Title type="additional"/>
             <div class="b-prizes">
@@ -44,12 +50,15 @@ const { apply, complete } = popUps;
                 <Footer/>
             </div>
         </main>
-        <Popup target={apply}>
+        <PopupSecond target={apply}>
             <PopupQuest/>
-        </Popup>  
-        <Popup target={complete}>
-            <PopupQuest/>
-        </Popup>  
+        </PopupSecond>  
+        <PopupSecond target={complete}>
+            <PopupComplete/>
+        </PopupSecond>  
+        <PopupSecond target={prize}>
+            <PopupPrizes/>
+        </PopupSecond>  
     </Background>
 </Layout>
 
@@ -132,3 +141,10 @@ const { apply, complete } = popUps;
         }
     }
 </style>
+
+
+<script>
+    if(localStorage.getItem('day') === null) {
+        localStorage.setItem('day', '1')
+    }
+</script>

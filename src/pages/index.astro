@@ -155,3 +155,10 @@ const { startGame } = popUps;
         padding-block: 30px;
     }
 </style>
+
+
+<script>
+    if(localStorage.getItem('day') === null) {
+        localStorage.setItem('day', '1')
+    }
+</script>

@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import logo from "../assets/logo.svg";
 const { link } = Astro.props;
 ---
-<a href={link} target="_blank">
+<a href={link} target="_blank" popovertarget="prizes" popovertargetaction="show">
     <Image src={logo} alt="лого" width={50} height={50}/>
 </a>
 

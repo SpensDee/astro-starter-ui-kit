@@ -1,0 +1,75 @@
+---
+import ButtonHearth from '@components/Buttons/ButtonHearth.astro';
+const popUps = {
+    complete: 'complete'
+}
+const { complete } = popUps;
+---
+
+<section data-complete-btn class="hide">
+    <article class="popup-quest-content">
+        <h1 data-translate="gracTitle">Вітаємо! <br>
+            Завдання виконане!</h1>
+            <br>
+    </article>
+    <div class="b-btn-increment">
+        <ButtonHearth 
+        text="complete" 
+        attrs={{
+            "type": "button",
+            "popovertargetaction": "hide",
+            "popovertarget": complete
+            }} 
+        />
+    </div>
+</section>
+
+<style lang="scss">
+    .hide {
+        opacity: 0;
+        pointer-events: none;
+    }
+    section {
+        text-align: center;
+        font-family: 'MabryPro', sans-serif;
+        font-weight: 600;
+        font-size: 26px;
+        @media(max-width: 720px) {
+            font-size: 20px;
+        }
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80%;
+            background-color: #6D06F2;
+            z-index: -1;
+            border-radius: var(--popup-border-radius);
+        }
+    }
+    .b-btn-increment {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+</style>
+
+<script>
+import incrementDay from 'src/functions/next';
+
+const completeModal = document.querySelector('[data-complete-btn]');
+
+window.addEventListener('blur', () => {
+    completeModal.classList.add('hide')
+})
+window.addEventListener('focus', () => {
+    completeModal.classList.remove('hide')
+})
+
+document.querySelector('.b-btn-increment').addEventListener('click', () => {
+    incrementDay()
+})
+</script>

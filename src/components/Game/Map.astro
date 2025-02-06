@@ -399,33 +399,8 @@ const days = [
 </style>
 
 <script>
-    
-const partners = {
-    onepartners: {
-        src: '/logo.svg',
-        id: 'onepartners'
-    },
-    semproConference: {
-        src: '/sempro.svg',
-        id: 'semproConference'
-    },
-    growePartners: {
-        src: '/grow.svg',
-        id: 'growePartners'
-    },
-    hollyTraff: {
-        src: '/holy.png',
-        id: 'hollyTraff'
-    },
-    arbitrageUp: {
-        src: '/arbitrageup.svg',
-        id: 'arbitrageUp'
-    },
-    oneMedia: {
-        src: '/OneMedia.png',
-        id: 'oneMedia'
-    }
-};
+import { partners, days } from 'src/functions/data';
+import { startTimer } from 'src/functions/timer';
 
 function getLogoSizes() {
     const isLargeScreen = matchMedia('(min-width: 720px)').matches;
@@ -442,104 +417,12 @@ function getLogoSizes() {
     };
 }
 
+let logoSizes = getLogoSizes();
+const hearths: NodeListOf<HTMLElement> = document.querySelectorAll('.heart');
 
-let logoSizes = getLogoSizes(); 
-
-    const days = {
-        1: {
-            open: true,
-            logo: partners.onepartners.src,
-            task: '',
-            link: ''
-        },
-        2: {
-            open: true,
-            logo: partners.semproConference.src,
-            task: '',
-            link: ''
-        },
-        3: {
-            open: true,
-            logo: partners.onepartners.src,
-            task: '',
-            link: ''
-        },
-        4: {
-            open: true,
-            logo: partners.onepartners.src,
-            task: '',
-            link: ''
-        },
-        5: {
-            open: true,
-            logo: partners.growePartners.src,
-            task: '',
-            link: ''
-        },
-        6: {
-            open: true,
-            logo: partners.hollyTraff.src,
-            task: '',
-            link: ''
-        },
-        7: {
-            open: true,
-            logo: partners.onepartners.src,
-            task: '',
-            link: ''
-        },
-        8: {
-            open: true,
-            logo: partners.arbitrageUp.src,
-            task: '',
-            link: ''
-        },
-        9: {
-            open: true,
-            logo: partners.onepartners.src,
-            task: '',
-            link: ''
-        },
-        10: {
-            open: true,
-            logo: partners.oneMedia.src,
-            task: '',
-            link: ''
-        },
-        11: {
-            open: true,
-            logo: partners.onepartners.src,
-            task: '',
-            link: ''
-        },
-        12: {
-            open: false,
-            logo: partners.onepartners.src,
-            task: '',
-            link: ''
-        },
-        13: {
-            open: false,
-            logo: partners.onepartners.src,
-            task: '',
-            link: ''
-        },
-        14: {
-            open: false,
-            logo: partners.onepartners.src,
-            task: '',
-            link: ''
-        }
-    }
-
-    const hearths: NodeListOf<HTMLElement> = document.querySelectorAll('.heart');
-
- {/* начальный рендер */}
-    const openDay = (day: HTMLElement) => {
-        day.classList.add('open')
-}
-
-
+const openDay = (day: HTMLElement) => {
+    day.classList.add('open');
+};
 
 // Обновляем при изменении размера окна
 matchMedia('(min-width: 560px)').addEventListener('change', () => {
@@ -550,18 +433,31 @@ function setLogoSize(status: string) {
     return logoSizes[status] || logoSizes.default;
 }
 
-Object.entries(days).forEach(([dayNumber, dayData], index) => {
-    if (dayData.open) {
-        openDay(hearths[index]);
+// Получаем текущий день из localStorage, если нет — берём по `days`
+const storedDay = localStorage.getItem('day');
+const lastOpenDay = storedDay ? parseInt(storedDay, 10) : Math.max(
+    ...Object.keys(days)
+        .map(Number)
+        .filter(day => days[day].open)
+);
+
+
+
+// Отображаем открытые дни
+hearths.forEach((hearth, index) => {
+    const dayNumber = index + 1;
+
+    if (dayNumber <= lastOpenDay) {
+        openDay(hearth);
 
         const logo = document.createElement('img');
-        hearths[index].appendChild(logo);
+        hearth.appendChild(logo);
 
-        // Поиск партнёра по пути к лого
+        const dayData = days[dayNumber] || {};
         const partnerEntry = Object.values(partners).find(partner => partner.src === dayData.logo);
         const partnerId = partnerEntry ? partnerEntry.id : 'default';
 
-        logo.src = dayData.logo;
+        logo.src = dayData.logo || '';
         logo.alt = 'logo';
         logo.classList.add('partner-logo');
         logo.style.cssText = `
@@ -574,41 +470,34 @@ Object.entries(days).forEach(([dayNumber, dayData], index) => {
             transform: translate(-50%, -50%);
             width: ${setLogoSize(partnerId)};
         `;
+
+        const blockedElement = hearth.querySelector('.blocked');
+        const openingElement = hearth.querySelector('.opening');
+
+        if (blockedElement instanceof HTMLElement) {
+            blockedElement.style.display = 'none';
+        }
+
+        if (openingElement instanceof HTMLElement) {
+            openingElement.style.display = 'block';
+        }
     }
 });
 
-    hearths.forEach(hearth => {
-        if (hearth.classList.contains('open')) {
-            const blockedElement = hearth.querySelector('.blocked');
-            const openingElement = hearth.querySelector('.opening');
-
-            if (blockedElement instanceof HTMLElement) {
-                blockedElement.style.display = 'none';
-            }
-
-            if (openingElement instanceof HTMLElement) {
-                openingElement.style.display = 'block';
-            }
-        }
-    });
-
-{/* вычисляем текущее/последнее открытое задание */}
+// Устанавливаем текущий день
 const openingDays: NodeListOf<HTMLElement> = document.querySelectorAll('.open');
-const lastOpenDay = openingDays[openingDays.length - 1];
-lastOpenDay.classList.add('current-day');
+const lastOpenElement = openingDays[openingDays.length - 1];
 
-const lastOpenDayIndex = Object.keys(days)
-  .reverse() 
-  .find((key) => days[parseInt(key, 10)].open === true);
-
-if (lastOpenDayIndex) {
-  const lastOpenDay = parseInt(lastOpenDayIndex, 10); 
-  localStorage.setItem('day', lastOpenDay.toString());
+if (lastOpenElement) {
+    lastOpenElement.classList.add('current-day');
 }
 
-lastOpenDay.insertAdjacentHTML('beforeend',`
-<div class="watch-quest">
-    ${matchMedia('(min-width: 720px)').matches ? '<span class="btn-open-quest" data-translate="pointer">Завдання на сьогодні</span>' : ''}
+if (lastOpenElement) {
+    lastOpenElement.classList.add('current-day');
+    lastOpenElement.insertAdjacentHTML('beforeend',`
+    <div class="watch-quest">
+    <span id="countdown"></span>
+    ${matchMedia('(min-width: 720px)').matches ? '<button popovertarget="apply" class="btn-open-quest" data-translate="pointer">Завдання на сьогодні</button>' : ''}
     <svg  width="54" height="68" viewBox="0 0 54 68" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g class="point">
         <path d="M19.349 41.6282C20.351 42.6313 21.5408 43.4272 22.8504 43.9702C24.1601 44.5132 25.5639 44.7927 26.9816 44.7927C28.3994 44.7927 29.8032 44.5132 31.1129 43.9702C32.4225 43.4272 33.6123 42.6313 34.6143 41.6282L48.0724 28.1679C53.3846 22.8549 54.7325 14.366 50.4856 8.03717C49.2013 6.09341 47.5001 4.46021 45.5057 3.25627C43.5101 2.05167 41.2712 1.30711 38.9518 1.07676C36.6323 0.84641 34.2907 1.13606 32.0973 1.92464C30.21 2.60317 28.4732 3.63641 26.9792 4.96559C25.484 3.64479 23.7482 2.61938 21.8635 1.94743C19.6724 1.16624 17.335 0.882345 15.0206 1.11632C12.7063 1.35029 10.4729 2.09628 8.48248 3.3002C6.49311 4.50346 4.79615 6.13404 3.51441 8.07389C-0.732527 14.4028 0.615377 22.8916 5.92756 28.2046L19.349 41.6282Z" fill="#FF0004" stroke="white" stroke-width="2"/>
@@ -676,7 +565,12 @@ lastOpenDay.insertAdjacentHTML('beforeend',`
         }
 
 </style>`)
+}
 
 
-
+////////////////////////////
+document.querySelector('.btn-open-quest').addEventListener('click', () => {
+    console.log('click')
+    startTimer('#countdown', 20);
+});
 </script>

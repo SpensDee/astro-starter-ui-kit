@@ -272,6 +272,78 @@ input:-webkit-autofill:active{
 </style>
 
 <script>
+document.addEventListener("DOMContentLoaded", () => {
+    if(localStorage.getItem('phone') && localStorage.getItem('status')) {
+        window.location.href = '/play'
+    }
+
+    const form = document.querySelector("form") as HTMLFormElement;
+    const phoneInput = form.querySelector("input[name='phone']") as HTMLInputElement;
+    const idInput = form.querySelector("input[name='id']") as HTMLInputElement;
+    const instInput = form.querySelector("input[name='inst']") as HTMLInputElement;
+    const radioWeb = form.querySelector("input[value='web']") as HTMLInputElement;
+    const radioVisitor = form.querySelector("input[value='visitor']") as HTMLInputElement;
+    const submitButton = form.querySelector(".b-modal-btn") as HTMLButtonElement;
+
+    function saveToLocalStorage(): void {
+        const status = radioWeb.checked ? "web" : "visitor";
+        const phone = phoneInput.value.trim();
+        const partner_id = idInput.value.trim();
+        const instagram = instInput.value.trim();
+
+        localStorage.setItem("status", status);
+        localStorage.setItem("phone", phone);
+        localStorage.setItem("partner_id", partner_id);
+        localStorage.setItem("instagram", instagram);
+    }
+
+    function validateForm(): void {
+        const isPhoneFilled = phoneInput.value.trim().length > 0;
+        const isIdFilled = idInput.value.trim().length > 0;
+        const isInstFilled = instInput.value.trim().length > 0;
+        const isWebSelected = radioWeb.checked;
+        const isVisitorSelected = radioVisitor.checked;
+
+        if (isPhoneFilled && ((isWebSelected && isIdFilled) || (isVisitorSelected && isInstFilled))) {
+            submitButton.disabled = false;
+            submitButton.style.pointerEvents = "auto";
+            submitButton.style.opacity = "1"; 
+        } else {
+            submitButton.disabled = true;
+            submitButton.style.pointerEvents = "none";
+            submitButton.style.opacity = "0.5"; 
+        }
+
+        saveToLocalStorage();
+    }
+
+    function restoreFromLocalStorage(): void {
+        const storedStatus = localStorage.getItem("status");
+        const storedPhone = localStorage.getItem("phone");
+        const storedPartnerId = localStorage.getItem("partner_id");
+        const storedInstagram = localStorage.getItem("instagram");
+
+        if (storedPhone) phoneInput.value = storedPhone;
+        if (storedPartnerId) idInput.value = storedPartnerId;
+        if (storedInstagram) instInput.value = storedInstagram;
+        if (storedStatus === "web") radioWeb.checked = true;
+        if (storedStatus === "visitor") radioVisitor.checked = true;
+
+        validateForm();
+    }
+
+    // Восстанавливаем данные при загрузке страницы
+    restoreFromLocalStorage();
+
+    // Отслеживание изменений в полях и радиокнопках
+    phoneInput.addEventListener("input", validateForm);
+    idInput.addEventListener("input", validateForm);
+    instInput.addEventListener("input", validateForm);
+    radioWeb.addEventListener("change", validateForm);
+    radioVisitor.addEventListener("change", validateForm);
+});
+
+
 document.addEventListener('DOMContentLoaded', () => {
     // Получаем элементы формы
     const instInput = document.querySelector<HTMLInputElement>('input[name="inst"]')?.parentElement?.parentElement;
@@ -344,7 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Теперь переменная currentQuest содержит актуальный номер квеста
     console.log(`Текущее задание: ${currentQuest}`);
     
-    window.localStorage.setItem('quest', currentQuest)
+    window.localStorage.setItem('quest', currentQuest.toString())
     
     
     const form = document.querySelector('.form') as HTMLFormElement | null;

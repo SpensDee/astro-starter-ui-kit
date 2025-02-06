@@ -1,4 +1,10 @@
-<span class="open-quest" data-translate="pointer">Завдання на сьогодні</span>
+---
+const { attrs } = Astro.props;
+---
+
+<button {...attrs} class="open-quest" data-translate="pointer">
+    Завдання на сьогодні
+</button>
 
 <style lang="scss">
     .open-quest {
