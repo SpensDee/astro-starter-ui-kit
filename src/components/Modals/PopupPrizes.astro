@@ -46,61 +46,110 @@
 import { partners, days } from 'src/functions/data';
 
 const questContent = document.querySelector('.popup-quest-content2') as HTMLElement | null;
+let currentIndex = null;
 
-let currentIndex = null; // Глобальная переменная для хранения текущего индекса
+function createQuest(translateLang: string | null) {
+    setTimeout(() => {
+        if (!questContent || !translateLang) {
+            console.error('Ошибка: необходимые элементы не найдены');
+            return;
+        }
 
-function createQuest(questIndex, translateLang) {
-    if (questContent && questIndex && translateLang) {
-        const index = Number(questIndex -1);
-        currentIndex = index; // Сохраняем индекс в глобальную переменную
+        // Получаем свежее значение из localStorage внутри таймаута
+        const selectedQuestIndex = localStorage.getItem("select_history");
+        console.log('Текущий выбранный квест:', selectedQuestIndex);
+        
+        if (!selectedQuestIndex) {
+            console.error('Не выбран квест из истории');
+            return;
+        }
 
-        if (days[index]) {
-            console.log(`Обновление UI: ${translateLang}`);
-            questContent.innerHTML = `
-                <header data-header style="
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    gap: 15px;
-                    margin-bottom: 30px;
-                ">
-                  <div style="
+        const index = Number(selectedQuestIndex);
+        currentIndex = index;
+
+        if (!days[index]) {
+            console.error(`Квест с индексом ${index} не найден в days`);
+            return;
+        }
+
+        questContent.innerHTML = `
+            <header data-header style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 15px;
+                margin-bottom: 30px;
+            ">
+                <div style="
                     border-radius: 50%;
-                    padding: ${window.matchMedia('(min-width: 720px)').matches ? '20px;' : '8px'};
+                    padding: ${window.matchMedia('(min-width: 720px)').matches ? '20px' : '12px'};
                     background: #210446;
-                    width: ${window.matchMedia('(min-width: 720px)').matches ? '90px;' : '56px'};
-                    height: ${window.matchMedia('(min-width: 720px)').matches ? '90px;' : '56px'};
+                    width: ${window.matchMedia('(min-width: 720px)').matches ? '90px' : '56px'};
+                    height: ${window.matchMedia('(min-width: 720px)').matches ? '90px' : '56px'};
                     aspect-ratio: 1/1;
                 ">
                     <img width="100%" height="100%" src="${days[index].logo}" 
                     style="object-fit: contain;" 
                     alt="Квест" />
                 </div>
-                 <h2 style="
-                 font-weight: 600; 
-                 font-size: ${window.matchMedia('(min-width: 720px)').matches ? '26px;' : '24px'};
-                 text-align: center;
-                 ">${days[index][translateLang]?.taskTitle || 'Нет заголовка'}</h2>
-                 <img src="/3heart.svg"/>
-                </header>
-                <p style="
+                <h2 style="
+                    font-weight: 600; 
+                    font-size: ${window.matchMedia('(min-width: 720px)').matches ? '26px' : '24px'};
+                    text-align: center;
+                ">${days[index][translateLang]?.taskTitle || 'Нет заголовка'}</h2>
+                <img src="/3heart.svg"/>
+            </header>
+            <p style="
                 font-family: 'MabryPro', sans-serif;
                 font-weight: 400;
                 text-align: left;
-                ${window.matchMedia('(min-width: 768px)').matches ? 'font-size: 22px;' : 'font-size: 16px;'}
-                ">${days[index][translateLang]?.task || 'Нет задания'}</p>
-            `;
-        } else {
-            console.error(`Квест с индексом ${index} не найден в days`);
-        }
-    } else {
-        console.error('Ошибка: либо .popup-quest-content2 не найден, либо questIndex не установлен');
-    }
+                ${window.matchMedia('(min-width: 768px)').matches ? 'font-size: 22px' : 'font-size: 16px'};
+            ">${days[index][translateLang]?.task || 'Нет задания'}</p>
+        `;
+    }, 0);
+}
+
+// Функция для обновления контента при изменении localStorage
+function handleStorageChange() {
+    const translateLang = localStorage.getItem('lang');
+    createQuest(translateLang);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    setQuest();
+    // Первоначальная инициализация
+    handleStorageChange();
 
+    // Слушатель изменений localStorage
+    window.addEventListener('storage', () => {
+        handleStorageChange();
+    });
+
+    // Добавляем MutationObserver для отслеживания изменений в DOM
+    const observer = new MutationObserver(() => {
+        if (localStorage.getItem('select_history')) {
+            handleStorageChange();
+        }
+    });
+
+    // Следим за изменениями в родительском элементе квестов
+    const questsContainer = document.querySelector('.quests-container'); // замените на ваш селектор
+    if (questsContainer) {
+        observer.observe(questsContainer, { 
+            childList: true, 
+            subtree: true, 
+            attributes: true 
+        });
+    }
+
+    // Обработчик кликов на квестах
+    document.addEventListener('click', (e) => {
+        const questItem = (e.target as Element).closest('.quest-item:not(.locked)');
+        if (questItem) {
+            setTimeout(handleStorageChange, 0);
+        }
+    });
+
+    // Обработчик для кнопки ссылки
     document.querySelector('.b-qb2')?.addEventListener('click', () => {
         if (currentIndex !== null && days[currentIndex]?.link) {
             window.open(days[currentIndex].link, '_blank', 'noopener,noreferrer');
@@ -110,21 +159,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// Добавляем глобальный слушатель изменений localStorage
+if (typeof window !== 'undefined') {
+    const originalSetItem = localStorage.setItem;
+    localStorage.setItem = function(key: string, value: string) {
+        const event = new Event('itemInserted');
+        document.dispatchEvent(event);
+        originalSetItem.apply(this, [key, value]);
+        if (key === 'select_history') {
+            setTimeout(handleStorageChange, 0);
+        }
+    };
 
-function setQuest() {
-    setTimeout(() => {
-        // Считываем язык и индекс после задержки
-        const questIndex = window.localStorage.getItem('day');
-        const translateLang = window.localStorage.getItem('lang'); 
-
-        console.log(`Язык из localStorage после задержки: ${translateLang}`);
-
-        createQuest(questIndex, translateLang);
-    }, 50); // 50ms — достаточно, чтобы данные в localStorage успели обновиться
+    document.addEventListener('itemInserted', () => {
+        setTimeout(handleStorageChange, 0);
+    });
 }
-
-// Для обновления при изменении хэша и после загрузки страницы
-window.addEventListener('DOMContentLoaded', setQuest);
-window.addEventListener('hashchange', setQuest);
-
 </script>
