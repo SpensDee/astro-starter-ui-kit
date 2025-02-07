@@ -64,13 +64,6 @@ const { startGame } = popUps;
 <style lang="scss">
     @use 'src/styles/vars' as *;
 
-    html,
-    body {
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-    }
-
     [class*=b-] {
         width: 100%;
         z-index: 1;
@@ -160,5 +153,8 @@ const { startGame } = popUps;
 <script>
     if(localStorage.getItem('day') === null) {
         localStorage.setItem('day', '1')
+    }
+    if(localStorage.getItem('select_history') === null) {
+        localStorage.setItem('select_history', '2')
     }
 </script>

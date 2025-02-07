@@ -48,15 +48,15 @@ export const days = {
         logo: partners.semproConference.src,
         ua: {
             taskTitle: 'Романтична метафора',
-            task: 'Перейди за посиланням, будь підписаним на One Partners та Sempro в Instagram та лайкни цей пост. Придумай романтичну фразу “One Partners та Sempro — це як ...” та поділись ним у коментарях, аби мати змогу виграти Sempro Pass на всі івенти від Sempro у 2025 році! Термін дії завдання до кінця мапи кохання (до 14.02 включно)!',
+            task: 'Перейди за посиланням, будь підписаним на One Partners та Sempro в Instagram та лайкни цей пост. Придумай романтичну фразу “One Partners та Sempro — це як ...” та поділись ним у коментарях, аби мати змогу виграти Sempro Pass на всі івенти від Sempro у 2025 році! Термін дії завдання до кінця мапи кохання (до 20.12 включно)!',
         },
         ru: {
             taskTitle: 'Романтическая метафора',
-            task: 'Перейди по ссылке, подпишись на One Partners и Sempro в Instagram и поставь лайк этому посту. Придумай романтическую фразу “One Partners и Sempro — это как...” и поделись ею в комментариях, чтобы получить шанс выиграть Sempro Pass на все мероприятия Sempro в 2025 году! Задание действует до конца карты любви (до 14.02 включительно)!',
+            task: 'Перейди по ссылке, подпишись на One Partners и Sempro в Instagram и поставь лайк этому посту. Придумай романтическую фразу “One Partners и Sempro — это как...” и поделись ею в комментариях, чтобы получить шанс выиграть Sempro Pass на все мероприятия Sempro в 2025 году! Задание действует до конца карты любви (до 20.12 включительно)!',
         },
         en: {
             taskTitle: 'Romantic Metaphor',
-            task: 'Follow the link, subscribe to One Partners and Sempro on Instagram, and like this post. Come up with a romantic phrase “One Partners and Sempro are like...” and share it in the comments to get a chance to win a Sempro Pass for all Sempro events in 2025! The task is valid until the end of the Love Map (until 14.02 inclusive)!',
+            task: 'Follow the link, subscribe to One Partners and Sempro on Instagram, and like this post. Come up with a romantic phrase “One Partners and Sempro are like...” and share it in the comments to get a chance to win a Sempro Pass for all Sempro events in 2025! The task is valid until the end of the Love Map (until 20.12 inclusive)!',
         },
         link: 'https://www.instagram.com/onepartners.io'
     },

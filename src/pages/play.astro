@@ -12,6 +12,7 @@ import Dayli from '@components/Dayli.astro';
 import OpenModalBtn from '@components/Buttons/OpenModalBtn.astro';
 import PopupComplete from '@components/Modals/popupComplete.astro';
 import PopupPrizes from '@components/Modals/PopupPrizes.astro';
+import Agree from '@components/Agree.astro';
 
 const popUps = {
     apply: 'apply',
@@ -44,6 +45,7 @@ const { apply, complete, prize } = popUps;
             <div class="b-prizes">
                 <Wrapper>
                     <Dayli/>
+                    <Agree/>
                 </Wrapper>
             </div>
             <div class="b-footer">
@@ -128,6 +130,8 @@ const { apply, complete, prize } = popUps;
         @media(max-width: 440px) {
             padding-inline: 0;
         }
+
+        margin-top: 40px;
     }
 
     .b-mobile-btn {

@@ -32,7 +32,8 @@ const en = {
     go: "Go link",
     gracTitle: "Congratulations! <br> Task completed!",
     gracText: "Collect your Valentine's card of the day from your personal manager",
-    complete: "ok"
+    complete: "ok",
+    agr: "*winners of each day will be selected randomly and announced on 21.02.2025. The randomizer does not apply to the 4th, 10th, and 12th day of the Love Map."
 }
 
 export default en;
