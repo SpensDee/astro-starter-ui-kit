@@ -45,7 +45,7 @@ const decorList = [
     }, 
     {
         link: decor5,
-        width: 28.5,
+        width: 40,
         top: 39,
         left: 66,
     }, 
@@ -60,33 +60,33 @@ const decorList = [
 const decorListPlayPage = [
     {
         link: decor7,
-        width: 21,
-        top: 0,
-        left: 0,
+        width: 40,
+        top: 65,
+        left: 8,
     }, 
     {
         link: decor8,
-        width: 38,
-        top: -16,
-        left: -8,
+        width: 58,
+        top: 80,
+        left: 7,
     }, 
     {
         link: decor9,
-        width: 18,
-        top: 62,
-        left: 1,
+        width: 38,
+        top: 64,
+        left: 50,
     }, 
     {
         link: decor10,
         width: 34,
         top: 4,
-        left: 66,
+        left: 51,
     }, 
     {
         link: decor11,
-        width: 21,
+        width: 30,
         top: 37,
-        left: 79,
+        left: 60,
     }, 
     {
         link: decor12,
@@ -110,7 +110,7 @@ const decorListPlayPage = [
                     animationDuration: `${getRandomNumber(3, 5)}s`,
                     animationDelay: `${getRandomNumber(0.1, 0.7)}s`,
                 }}
-                class={`decor decor-${index}`}
+                class={`decor decor-${playPage ? (index + 6) : index}`}
                 formats={['avif', 'webp', 'png']}
                 decoding="async"
             />
@@ -130,7 +130,7 @@ const decorListPlayPage = [
 
         @media(max-width: 600px) {
             background-image: url('/BG-mob.progressive.jpg');
-            background-position: center;
+            background-position: top center;
         }
 
         &.play {
@@ -151,8 +151,8 @@ const decorListPlayPage = [
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        // pointer-events: none;
-        // user-select: none;
+        pointer-events: none;
+        user-select: none;
 
         @include xxl() {
             width: 1220px;
@@ -182,14 +182,16 @@ const decorListPlayPage = [
         position: absolute;
         object-fit: cover;
         height: auto;
-        // pointer-events: none;
-        // user-select: none;
+        pointer-events: none;
+        user-select: none;
         z-index: -1;
 
         @include md() {
 
             &-0 {
-                display: none;
+                width: 33% !important; 
+                top: 93% !important; 
+                left: 32% !important;
             }
 
             &-1 {

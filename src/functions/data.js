@@ -64,6 +64,23 @@ export const days = {
         open: false,
         logo: partners.onepartners.src,
         ua: {
+            taskTitle: 'Стріла Купідона',
+            task: 'Приведи друга до нашої партнерської програми One Partners впродовж всього лютого та отримай гарантовано 5% рефералки від One Partners! Термін дії завдання 24 години!',
+        },
+        ru: {
+            taskTitle: 'Стрела Купидона',
+            task: 'Приведи друга в нашу партнерскую программу One Partners в течение февраля и получи гарантированные 5% реферального вознаграждения от One Partners! Срок выполнения задания — 24 часа!',
+        },
+        en: {
+            taskTitle: 'Cupid\'s Arrow',
+            task: 'Bring a friend to our One Partners affiliate program throughout February and get a guaranteed 5% referral fee from One Partners! The task is valid for 24 hours!',
+        },
+        link: 'https://onepartners.io?source=valentine_day'
+    },
+    4: {
+        open: false,
+        logo: partners.onepartners.src,
+        ua: {
             taskTitle: 'Подаруй увагу',
             task: 'Підпишись на всіх партнерів мапи кохання, відмічених в святковій сторіс One Partners в Instagram та отримай шанс виграти підписку на Premium акаунт в Telegram! Термін дії завдання 24 години!',
         },
@@ -76,23 +93,6 @@ export const days = {
             task: 'Subscribe to all partners of the Love Map featured in One Partners\' holiday Instagram story and get a chance to win a Telegram Premium subscription! The task is valid for 24 hours!',
         },
         link: 'https://www.instagram.com/onepartners.io'
-    },
-    4: {
-        open: false,
-        logo: partners.onepartners.src,
-        ua: {
-            taskTitle: 'Стріла Купідона',
-            task: 'Приведи друга до нашої партнерської програми One Partners впродовж всього лютого та отримай гарантовано 10% рефералки від One Partners! Термін дії завдання 24 години!',
-        },
-        ru: {
-            taskTitle: 'Стрела Купидона',
-            task: 'Приведи друга в нашу партнерскую программу One Partners в течение февраля и получи гарантированные 10% реферального вознаграждения от One Partners! Срок выполнения задания — 24 часа!',
-        },
-        en: {
-            taskTitle: 'Cupid\'s Arrow',
-            task: 'Bring a friend to our One Partners affiliate program throughout February and get a guaranteed 10% referral fee from One Partners! The task is valid for 24 hours!',
-        },
-        link: 'https://one-partners.io'
     },
     5: {
         open: false,
@@ -181,7 +181,7 @@ export const days = {
     },
     10: {
         open: false,
-        logo: partners.onepartners.src,
+        logo: partners.oneMedia.src,
         ua: {
             taskTitle: 'Мем кохання',
             task: 'Будь підписаним на сторінки One Partners та One Media в Instagram, постав лайк останньому посту та поділись у коментарях своїм варіантом підпису до мему, який зазначений в цьому пості. Той, хто вигадає найкреативніший підпис, отримає кальян від One Media! Термін дії завдання 24 години!',

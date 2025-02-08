@@ -24,7 +24,7 @@ const { startGame } = popUps;
     <main>
         <div class="b-header">
             <div class="b-header__logo">
-                <Logo link="https://onepartners.io"/>
+                <Logo link="https://onepartners.io?source=valentine_day"/>
             </div>
             <div class="b-header__langs">
                 <LangSwitcher/>
@@ -49,6 +49,12 @@ const { startGame } = popUps;
                     </div>
                 </Wrapper>
             </div>
+        </div>
+        <div class="b-preview" data-translate="preview">
+            <img src="/preview.png" draggable="false" alt="preview">
+        </div>
+        <div class="b-preview2 b-preview" data-translate="preview2">
+            <img src="/preview2.png" draggable="false" alt="preview">
         </div>
         <div class="b-footer">
             <Footer/>
@@ -147,12 +153,32 @@ const { startGame } = popUps;
         margin-top: auto;
         padding-block: 30px;
     }
+
+    .b-preview {
+        max-width: 980px;
+        margin-top: 40vh;
+        height: auto;
+        pointer-events: none;
+        user-select: none;
+        width: initial;
+        margin-inline: auto;
+
+        & img {
+            object-fit: contain;
+        }
+    }
+
+    .b-preview2 {
+        margin-top: 20vh;
+        max-width: 1080px;
+        margin-bottom: 2vh;
+    }
 </style>
 
 
 <script>
     if(localStorage.getItem('day') === null) {
-        localStorage.setItem('day', '1')
+        localStorage.setItem('day', '2')
     }
     if(localStorage.getItem('select_history') === null) {
         localStorage.setItem('select_history', '2')

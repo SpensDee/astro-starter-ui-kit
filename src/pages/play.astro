@@ -113,6 +113,7 @@ const { apply, complete, prize } = popUps;
 
         @include md() {
             margin-bottom: 32px;
+            margin-top: 12vh;
         }
     }
     .b-prizes {
@@ -122,6 +123,7 @@ const { apply, complete, prize } = popUps;
         padding-inline: 15px;
         display: flex;
         justify-content: center;
+        margin-top: 40px;
 
         @include md() {
             margin-bottom: 175px;
@@ -130,8 +132,6 @@ const { apply, complete, prize } = popUps;
         @media(max-width: 440px) {
             padding-inline: 0;
         }
-
-        margin-top: 40px;
     }
 
     .b-mobile-btn {
@@ -142,6 +142,7 @@ const { apply, complete, prize } = popUps;
 
         @media(min-width: 720px) {
             display: none;
+            margin-bottom: 400px;
         }
     }
 </style>
@@ -149,6 +150,6 @@ const { apply, complete, prize } = popUps;
 
 <script>
     if(localStorage.getItem('day') === null) {
-        localStorage.setItem('day', '1')
+        localStorage.setItem('day', '2')
     }
 </script>

@@ -104,6 +104,12 @@ function createQuest(questIndex, translateLang) {
                 text-align: left;
                 ${window.matchMedia('(min-width: 768px)').matches ? 'font-size: 22px;' : 'font-size: 16px;'}
                 ">${days[index][translateLang]?.task || 'Нет задания'}</p>
+                <br/>
+                <p style="font-size: 12px; text-align: center; color: #cecece;display: flex; justify-content: center;">
+                ${localStorage.getItem('lang') === 'ua' ? '* Після виконання квесту підтвердьте це, натиснувши "ОК" на кладці' : ''}
+                ${localStorage.getItem('lang') === 'ru' ? '* После выполнения квеста подтвердите это, нажав "ОК" на вкладке' : ''}
+                ${localStorage.getItem('lang') === 'en' ? '* After completing the quest, confirm it by clicking "OK" on the tab' : ''}    
+                <p/>
             `;
         } else {
             console.error(`Квест с индексом ${index} не найден в days`);

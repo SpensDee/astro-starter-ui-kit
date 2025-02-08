@@ -33,7 +33,14 @@ const en = {
     gracTitle: "Congratulations! <br> Task completed!",
     gracText: "Collect your Valentine's card of the day from your personal manager",
     complete: "ok",
-    agr: "*winners of each day will be selected randomly and announced on 21.02.2025. The randomizer does not apply to the 4th, 10th, and 12th day of the Love Map."
+    agr: "*winners of each day will be selected randomly and announced on 21.02.2025. The randomizer does not apply to the 4th, 10th, and 12th day of the Love Map.",
+    preview: `<img src="/preview-en.png"  width="100%" draggable="false" alt="preview" style="object-fit: contain;">`,
+    preview2: `<img src="/preview2-en.png"  width="100%" draggable="false" alt="preview" style="object-fit: contain;">`,
+    formDesc: `<p style="color: #fafafa">*The type of tasks depends on your choice in the "Registered in the affiliate program" block:</p>
+        <p>❤️ Choosing <span style="color: #EDFF00">"Yes"</span>— these tasks are designed for webmasters from the list of offers with a bid boost.</p>
+        <p>❤️ Choosing <span style="color: #EDFF00">"No"</span>— means tasks to be completed on social media.</p>
+        <p>✅ Participation in both parts of the map is possible at the same time! </p>`,  
+        link: 'SinUp in OnePartners',
 }
 
 export default en;

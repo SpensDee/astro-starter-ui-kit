@@ -24,10 +24,8 @@ import ButtonHearth from "@components/Buttons/ButtonHearth.astro";
         <label class="form__label form-phone">
             <div class="form__input-wrapper">
                 <input type="tel" name="phone" class="form__input" 
-                inputmode="tel"
                 maxlength="16"
-                required
-                placeholder="@Введіть ваш номер телефона"
+                placeholder="@Введіть ваш номер телефону"
                 data-translate="placeholderPhone"
                 autocomplete="off"
                 >
@@ -37,9 +35,6 @@ import ButtonHearth from "@components/Buttons/ButtonHearth.astro";
         <label class="form__label form-phone">
             <div class="form__input-wrapper">
                 <input type="text" name="id" class="form__input" 
-                inputmode="tel"
-                maxlength="5"
-                required
                 placeholder="@Введіть ваш ID партнера"
                 data-translate="ppid"
                 autocomplete="off"
@@ -57,14 +52,193 @@ import ButtonHearth from "@components/Buttons/ButtonHearth.astro";
             </div>
         </label>
     </legend>
+        <a style="opacity: 0; pointer-events: none;" class="s-link" data-translate="link" href="https://aff.onepartners.io/signup/affiliate?source=valentine_day">Зареєструватися у One Partners</a>
     <div class="b-modal-btn">
         <ButtonHearth text="startGameButton" type="submit" link="/play"/>
     </div>
+    <br>
+    <div class="desc" data-translate="formDesc">
+        <p style="color: #fafafa">*Від вашого вибору у блоці «Зареєстрований у партнерці» залежить тип завдань:</p>
+        <p>❤️ Вибір <span style="color: #EDFF00">«Так»</span>— це завдання розраховані для вебмайстрів зі списку оферів з бустом ставок.</p>
+        <p>❤️ Вибір <span style="color: #EDFF00">«Ні»</span> — завдання підлягають виконанню у соціальних мережах.</p>
+        <p>✅ Участь можлива у двох частинах карти одночасно! </p>
+    </div>
 </form>
 
+<script>
+    // валидация
+document.addEventListener("DOMContentLoaded", () => {
+    if((localStorage.getItem('status') === 'visitor' && localStorage.getItem('phone') && localStorage.getItem('instagram')) ||
+    localStorage.getItem('status') === 'web' && localStorage.getItem('instagram') && localStorage.getItem('partner_id')) {
+        window.location.href = '/play'
+    }
+
+    const form = document.querySelector("form") as HTMLFormElement;
+    const phoneInput = form.querySelector("input[name='phone']") as HTMLInputElement;
+    const idInput = form.querySelector("input[name='id']") as HTMLInputElement;
+    const tellInput = form.querySelector("input[name='inst']") as HTMLInputElement;
+    const radioWeb = form.querySelector("input[value='web']") as HTMLInputElement;
+    const radioVisitor = form.querySelector("input[value='visitor']") as HTMLInputElement;
+    const submitButton = form.querySelector(".b-modal-btn") as HTMLButtonElement;
+    const linkToOne = document.querySelector('.s-link') as HTMLElement;
+
+    function saveToLocalStorage(): void {
+        const status = radioWeb.checked ? "web" : "visitor";
+        const phone = phoneInput.value.trim();
+        const partner_id = idInput.value.trim();
+        const instagram = tellInput.value.trim();
+
+
+        localStorage.setItem("status", status);
+        localStorage.setItem("phone", phone);
+        localStorage.setItem("partner_id", partner_id);
+        localStorage.setItem("instagram", instagram);
+    }
+
+    function validateForm(): void {
+    const isPhoneFilled = phoneInput.value.trim().length > 0;
+    const isIdFilled = idInput.value.trim().length > 0;
+    const isInstFilled = tellInput.value.trim().length > 0;
+    const isWebSelected = radioWeb.checked;
+    const isVisitorSelected = radioVisitor.checked;
+
+    // Делаем только нужные поля обязательными
+    phoneInput.required = isVisitorSelected; // Телефон нужен только для visitor
+    idInput.required = isWebSelected; // ID нужен только для web
+    tellInput.required = true; // Instagram всегда обязателен
+
+    const idLabel = idInput.closest(".form__label") as HTMLElement | null;
+    const phoneLabel = phoneInput.closest(".form__label") as HTMLElement | null;
+
+if (isWebSelected) {
+    if (idLabel) idLabel.style.display = "block";
+    if (phoneLabel) phoneLabel.style.display = "none";
+    if(linkToOne) linkToOne.style.opacity = "0";
+    if(linkToOne) linkToOne.style.pointerEvents = "none";
+
+    phoneInput.value = ""; // Очищаем поле, чтобы оно не мешало
+} 
+else if (isVisitorSelected) {
+    if (idLabel) idLabel.style.display = "none";
+    if (phoneLabel) phoneLabel.style.display = "block";
+    if(linkToOne) linkToOne.style.opacity = "1";
+    if(linkToOne) linkToOne.style.pointerEvents = "auto";
+
+    idInput.value = ""; // Очищаем поле, чтобы оно не мешало
+}
+
+
+    // Проверка условий для активации кнопки
+    if (
+        isInstFilled && // Instagram всегда обязателен
+        ((isWebSelected && isIdFilled) || (isVisitorSelected && isPhoneFilled)) // Web → ID нужен, Visitor → Phone нужен
+    ) {
+        submitButton.disabled = false;
+        submitButton.style.pointerEvents = "auto";
+        submitButton.style.opacity = "1"; 
+    } else {
+        submitButton.disabled = true;
+        submitButton.style.pointerEvents = "none";
+        submitButton.style.opacity = "0.5"; 
+    }
+
+    saveToLocalStorage();
+}
+
+
+    // запись данніх в локал сторейдж
+    function restoreFromLocalStorage(): void {
+        const storedStatus = localStorage.getItem("status");
+        const storedPhone = localStorage.getItem("phone");
+        const storedPartnerId = localStorage.getItem("partner_id");
+        const storedInstagram = localStorage.getItem("instagram");
+
+        if (storedPhone) phoneInput.value = storedPhone;
+        if (storedPartnerId) idInput.value = storedPartnerId;
+        if (storedInstagram) tellInput.value = storedInstagram;
+        if (storedStatus === "web") radioWeb.checked = true;
+        if (storedStatus === "visitor") radioVisitor.checked = true;
+
+        validateForm();
+    }
+
+    // Восстанавливаем данные при загрузке страницы
+    restoreFromLocalStorage();
+
+    // Отслеживание изменений в полях и радиокнопках
+    phoneInput.addEventListener("input", validateForm);
+    idInput.addEventListener("input", validateForm);
+    tellInput.addEventListener("input", validateForm);
+    radioWeb.addEventListener("change", validateForm);
+    radioVisitor.addEventListener("change", validateForm);
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Получаем элементы формы
+    const tellInput = document.querySelector<HTMLInputElement>('input[name="phone"]')?.parentElement?.parentElement;
+    const ppidInput = document.querySelector<HTMLInputElement>('input[name="id"]')?.parentElement?.parentElement;
+    const webRadio = document.querySelector<HTMLInputElement>('input[name="partner"][value="web"]');
+    const visitorRadio = document.querySelector<HTMLInputElement>('input[name="partner"][value="visitor"]');
+
+    // Проверяем, что все элементы найдены
+    if (!tellInput || !ppidInput || !webRadio || !visitorRadio) {
+        console.error('One or more form elements not found');
+        return;
+    }
+
+    // Функция переключения полей
+    const toggleInputs = (): void => {
+        if (webRadio.checked) {
+            // Показываем поле ID партнера и скрываем Instagram
+            ppidInput.style.display = 'grid';
+            tellInput.style.display = 'none';
+        } else if (visitorRadio.checked) {
+            // Показываем поле Instagram и скрываем ID партнера
+            tellInput.style.display = 'grid';
+            ppidInput.style.display = 'none';
+        }
+    };
+
+    // Добавляем обработчики для радиокнопок
+    webRadio.addEventListener('change', toggleInputs);
+    visitorRadio.addEventListener('change', toggleInputs);
+
+    // Вызываем функцию при загрузке страницы для установки начального состояния
+    toggleInputs();
+});
+</script>
 
 <style lang="scss">
     @use 'src/styles/vars' as *;
+
+    .s-link {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        font-size: 16px;
+        color: var(--accent-color);
+        text-decoration: underline;
+        text-underline-offset: 4px;
+        margin-bottom: 10px;
+
+        @include md() {
+            font-size: 14px;
+        }
+
+        &:hover {
+            opacity: .75;
+        }
+    }
+
+    .desc {
+        font-size: 12px;
+        color: #cecece; 
+        & p {
+            margin: 0;
+            margin-bottom: 6px;
+        }
+    }
 
     article {
         @extend %flex-center;
@@ -74,6 +248,7 @@ import ButtonHearth from "@components/Buttons/ButtonHearth.astro";
         display: flex;
         justify-content: center;
         font-family: 'MabryPro';
+        user-select: none;
     }
 
     :root {
@@ -270,199 +445,3 @@ input:-webkit-autofill:active{
     color: var(--accent-color);
 }
 </style>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    if(localStorage.getItem('phone') && localStorage.getItem('status')) {
-        window.location.href = '/play'
-    }
-
-    const form = document.querySelector("form") as HTMLFormElement;
-    const phoneInput = form.querySelector("input[name='phone']") as HTMLInputElement;
-    const idInput = form.querySelector("input[name='id']") as HTMLInputElement;
-    const instInput = form.querySelector("input[name='inst']") as HTMLInputElement;
-    const radioWeb = form.querySelector("input[value='web']") as HTMLInputElement;
-    const radioVisitor = form.querySelector("input[value='visitor']") as HTMLInputElement;
-    const submitButton = form.querySelector(".b-modal-btn") as HTMLButtonElement;
-
-    function saveToLocalStorage(): void {
-        const status = radioWeb.checked ? "web" : "visitor";
-        const phone = phoneInput.value.trim();
-        const partner_id = idInput.value.trim();
-        const instagram = instInput.value.trim();
-
-        localStorage.setItem("status", status);
-        localStorage.setItem("phone", phone);
-        localStorage.setItem("partner_id", partner_id);
-        localStorage.setItem("instagram", instagram);
-    }
-
-    function validateForm(): void {
-        const isPhoneFilled = phoneInput.value.trim().length > 0;
-        const isIdFilled = idInput.value.trim().length > 0;
-        const isInstFilled = instInput.value.trim().length > 0;
-        const isWebSelected = radioWeb.checked;
-        const isVisitorSelected = radioVisitor.checked;
-
-        if (isPhoneFilled && ((isWebSelected && isIdFilled) || (isVisitorSelected && isInstFilled))) {
-            submitButton.disabled = false;
-            submitButton.style.pointerEvents = "auto";
-            submitButton.style.opacity = "1"; 
-        } else {
-            submitButton.disabled = true;
-            submitButton.style.pointerEvents = "none";
-            submitButton.style.opacity = "0.5"; 
-        }
-
-        saveToLocalStorage();
-    }
-
-    function restoreFromLocalStorage(): void {
-        const storedStatus = localStorage.getItem("status");
-        const storedPhone = localStorage.getItem("phone");
-        const storedPartnerId = localStorage.getItem("partner_id");
-        const storedInstagram = localStorage.getItem("instagram");
-
-        if (storedPhone) phoneInput.value = storedPhone;
-        if (storedPartnerId) idInput.value = storedPartnerId;
-        if (storedInstagram) instInput.value = storedInstagram;
-        if (storedStatus === "web") radioWeb.checked = true;
-        if (storedStatus === "visitor") radioVisitor.checked = true;
-
-        validateForm();
-    }
-
-    // Восстанавливаем данные при загрузке страницы
-    restoreFromLocalStorage();
-
-    // Отслеживание изменений в полях и радиокнопках
-    phoneInput.addEventListener("input", validateForm);
-    idInput.addEventListener("input", validateForm);
-    instInput.addEventListener("input", validateForm);
-    radioWeb.addEventListener("change", validateForm);
-    radioVisitor.addEventListener("change", validateForm);
-});
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    // Получаем элементы формы
-    const instInput = document.querySelector<HTMLInputElement>('input[name="inst"]')?.parentElement?.parentElement;
-    const ppidInput = document.querySelector<HTMLInputElement>('input[name="id"]')?.parentElement?.parentElement;
-    const webRadio = document.querySelector<HTMLInputElement>('input[name="partner"][value="web"]');
-    const visitorRadio = document.querySelector<HTMLInputElement>('input[name="partner"][value="visitor"]');
-
-    // Проверяем, что все элементы найдены
-    if (!instInput || !ppidInput || !webRadio || !visitorRadio) {
-        console.error('One or more form elements not found');
-        return;
-    }
-
-    // Функция переключения полей
-    const toggleInputs = (): void => {
-        if (webRadio.checked) {
-            // Показываем поле ID партнера и скрываем Instagram
-            ppidInput.style.display = 'grid';
-            instInput.style.display = 'none';
-        } else if (visitorRadio.checked) {
-            // Показываем поле Instagram и скрываем ID партнера
-            instInput.style.display = 'grid';
-            ppidInput.style.display = 'none';
-        }
-    };
-
-    // Добавляем обработчики для радиокнопок
-    webRadio.addEventListener('change', toggleInputs);
-    visitorRadio.addEventListener('change', toggleInputs);
-
-    // Вызываем функцию при загрузке страницы для установки начального состояния
-    toggleInputs();
-});
-
-
-
-    const nextQuest = document.querySelector('next-quest');
-    const todayDate: Date = new Date();
-    const todayTime: number = todayDate.getTime();
-    
-    // Определяем интерфейс для хранения данных о квестах в localStorage
-    interface QuestData {
-        startDate: number | null;
-        lastQuest: number;
-    }
-    
-    // Получаем данные из localStorage и парсим, если они есть
-    const storedData: string | null = localStorage.getItem('questData');
-    let questData: QuestData = storedData ? JSON.parse(storedData) as QuestData : { startDate: null, lastQuest: 1 };
-    
-    // Если стартовая дата не установлена, задаем текущий день как начало
-    if (!questData.startDate) {
-        questData.startDate = todayTime;
-        // localStorage.setItem('questData', JSON.stringify(questData));
-    }
-    
-    // Вычисляем, сколько дней прошло с момента начала выполнения пользователем
-    const userStartDate: Date = new Date(questData.startDate as number);
-    const daysElapsed: number = Math.floor((todayTime - userStartDate.getTime()) / (1000 * 60 * 60 * 24));
-    
-    // Определяем номер текущего задания (от 1 до 14)
-    let currentQuest: number = Math.min(daysElapsed + 1, 14);
-    
-    // Если новое задание доступно, обновляем данные в localStorage
-    if (currentQuest > questData.lastQuest) {
-        questData.lastQuest = currentQuest;
-        // localStorage.setItem('questData', JSON.stringify(questData));
-    }
-    
-    // Теперь переменная currentQuest содержит актуальный номер квеста
-    console.log(`Текущее задание: ${currentQuest}`);
-    
-    window.localStorage.setItem('quest', currentQuest.toString())
-    
-    
-    const form = document.querySelector('.form') as HTMLFormElement | null;
-    function currentPath () {
-        if(window.location.href.includes('/ru'))
-            return '/quest/ru'
-        if(window.location.href.includes('/en'))
-            return '/quest/en'
-        else 
-            return'/quest/ua'
-    }
-    
-    if (form) {
-        form.addEventListener('submit', async (e: SubmitEvent) => {
-            e.preventDefault(); 
-    
-            const formData = new FormData(form);
-            const partner = formData.get('partner') as string;
-            const phone = formData.get('phone') as string;
-            const quest = currentQuest.toString();
-    
-            const SCRIPT_URL: string = 'https://script.google.com/macros/s/AKfycbwkK8AyBgU7YHsFAnrSABSs0ymhE7UOfdhDjY3EdWQF0u-kEkzM_0fwwbJkPHGSJzKaag/exec';
-    
-            try {
-                const response: Response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: new URLSearchParams({ partner, phone, quest }),
-                });
-    
-                if (response.ok) {
-                    console.log('Данные успешно отправлены!');
-                    location.href = currentPath();
-                    form.reset(); 
-                } else {
-                    alert('Registration error');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        });
-    }
-    
-    const phoneInput = document.querySelector('input[name="phone"]');
-    
-    phoneInput?.addEventListener('input', (e) => {
-        const input = e.target as HTMLInputElement;
-        input.value = input.value.replace(/(?!^)\+/g, '').replace(/[^\d+]/g, ''); 
-    });
-</script>

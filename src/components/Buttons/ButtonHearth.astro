@@ -1,15 +1,15 @@
 ---
-import { Picture } from "astro:assets";
+import { Image } from "astro:assets";
 import button from '@assets/button.png';
 const { text, attrs, link } = Astro.props;
 ---
 {!link ? (<button class="button-start" 
     {...attrs}>
-	<Picture src={button} alt="button" width="216" height="178" formats={["avif", "webp", "png"]}/>
+	<Image src={button} alt="button" width="216" height="178"/>
     <span data-translate={text}>Розпочати гру</span>
 </button>) : (<a class="button-start" href={link}
     {...attrs}>
-	<Picture src={button} alt="button" width="216" height="178" formats={["avif", "webp", "png"]}/>
+	<Image src={button} alt="button" width="216" height="178"/>
     <span data-translate={text}>Розпочати гру</span>
 </a>)
 }
@@ -20,6 +20,7 @@ const { text, attrs, link } = Astro.props;
 	.button-start {
 		@extend %flex-center;
 		position: relative;
+		z-index: 9;
 
 		@media (hover: hover) {
 			&:hover {
@@ -37,7 +38,6 @@ const { text, attrs, link } = Astro.props;
 			display: block;
 			object-fit: contain;
 			z-index: 1;
-			pointer-events: none;
 			animation: pulse 4s ease-out infinite;
 			transition: transform 0.3s ease, filter 0.3s ease;
 			max-width: 100%;
@@ -51,8 +51,6 @@ const { text, attrs, link } = Astro.props;
 			transform: translate(-50%, -50%);
 			text-align: center;
 			color: white;
-			pointer-events: none;
-			user-select: none;
 			transition: text-shadow 0.4s ease;
 			font-size: 24px;
 

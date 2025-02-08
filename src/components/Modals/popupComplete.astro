@@ -8,21 +8,108 @@ const { complete } = popUps;
 
 <section data-complete-btn class="hide">
     <article class="popup-quest-content">
-        <h1 data-translate="gracTitle">Вітаємо! <br>
-            Завдання виконане!</h1>
-            <br>
+        <h1 data-translate="gracTitle">Вітаємо!<br>Завдання виконане!</h1>
+        <br>
     </article>
     <div class="b-btn-increment">
-        <ButtonHearth 
-        text="complete" 
-        attrs={{
-            "type": "button",
-            "popovertargetaction": "hide",
-            "popovertarget": complete
-            }} 
-        />
+        <form action="">
+            <input id="partner" name="partner" value="" type="hidden"/>
+            <input id="id" name="id" value="" type="hidden"/>
+            <input id="phone" name="phone" value="" type="hidden"/>
+            <input id="instagram" name="instagram" value="" type="hidden"/>
+            <input id="quest" name="quest" value="" type="hidden"/>
+            <div class="b-ok">
+                <ButtonHearth 
+                text="complete" 
+                attrs={{
+                    "type": "submit"
+                    }} 
+                />
+            </div>
+        </form>
     </div>
 </section>
+
+<script>
+    import { getLineAndCharacterOfPosition } from "typescript";
+
+const form = document.querySelector('form') as HTMLFormElement | null;
+
+if (form) {
+    const partner = form.querySelector('#partner') as HTMLInputElement | null;
+    const id = form.querySelector('#id') as HTMLInputElement | null;
+    const phone = form.querySelector('#phone') as HTMLInputElement | null;
+    const instagram = form.querySelector('#instagram') as HTMLInputElement | null;
+    const quest = form.querySelector('#quest') as HTMLInputElement | null;
+
+    // Восстановление значений из localStorage
+    if (partner) partner.value = localStorage.getItem('status') || '';
+    if (id) id.value = localStorage.getItem('partner_id') || '';
+    if (phone) phone.value = localStorage.getItem('phone') || '';
+    if (instagram) instagram.value = localStorage.getItem('instagram') || '';
+    if (quest) quest.value = localStorage.getItem('day') || '';
+
+    // Проверка возможности отправки формы в текущей сессии
+    const checkFormSubmissionLimit = (): boolean => {
+        // Проверяем флаг в sessionStorage
+        const hasSubmittedInSession = sessionStorage.getItem('formSubmitted') === 'true';
+        
+        if (hasSubmittedInSession) {
+            return false;
+        }
+        return true;
+    };
+
+    form.addEventListener('submit', async (e: SubmitEvent) => {
+        e.preventDefault();
+
+        // Проверяем лимит отправки
+        if (!checkFormSubmissionLimit()) {
+            return;
+        }
+
+        const SCRIPT_URL: string = 'https://script.google.com/macros/s/AKfycbzwVc856rpQHeTDwdNm9vTxs4o35BULuf-mGh1ln-_7lpZG8yRwYtR0sbeTfK-8JuW2WA/exec';
+
+        if (!partner || !id || !phone || !instagram || !quest) {
+            alert('Некоторые поля не найдены!');
+            return;
+        }
+
+        const formData = new URLSearchParams({
+            partner: partner.value,
+            id: id.value,
+            phone: phone.value,
+            instagram: instagram.value,
+            quest: quest.value
+        });
+
+        try {
+            const response: Response = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                // Устанавливаем флаг отправки в текущей сессии
+                sessionStorage.setItem('formSubmitted', 'true');
+
+                console.log('Данные успешно отправлены!');
+                
+
+                window.location.reload();// Очищаем форму после успешной отправки
+                
+                // Можно добавить редирект или показ сообщения об успехе
+                console.log('Форма успешно отправлена!');
+            } else {
+                alert('Ошибка регистрации');
+            }
+        } catch (error) {
+            console.error('Ошибка:', error);
+            alert('Произошла ошибка при отправке формы');
+        }
+    });
+}
+</script>
 
 <style lang="scss">
     .hide {
@@ -58,8 +145,6 @@ const { complete } = popUps;
 </style>
 
 <script>
-import incrementDay from 'src/functions/next';
-
 const completeModal = document.querySelector('[data-complete-btn]');
 
 window.addEventListener('blur', () => {
@@ -69,7 +154,4 @@ window.addEventListener('focus', () => {
     completeModal.classList.remove('hide')
 })
 
-document.querySelector('.b-btn-increment').addEventListener('click', () => {
-    incrementDay()
-})
 </script>
