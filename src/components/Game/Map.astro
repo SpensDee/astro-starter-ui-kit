@@ -89,7 +89,7 @@ const days = [
                 class={`heart heart-${day.day || ''}`} 
                 style={{ top: `${day.y}%`, left: `${day.x}%` }}
             >
-                <span class="opening" style="display: none">
+                <button class="opening" style="display: none">
                     <img class="bless" src="/bless.png" alt="bless" />
                     <Picture 
                         src={heart} 
@@ -99,7 +99,7 @@ const days = [
                         formats={["avif", "webp", "png"]} 
                         draggable="false"
                     />
-                </span>
+                </button>
                 <span class="blocked">
                     <Picture 
                         src={heartBlock} 
@@ -118,7 +118,12 @@ const days = [
 <style lang="scss">
     @use 'src/styles/vars' as *;
 
-        body {
+    .heart.complete {
+        pointer-events: none;
+        filter: brightness(0.5);
+    }
+
+    body {
         width: 100%;
         height: 100%;
         overflow-x: hidden;
@@ -168,6 +173,7 @@ const days = [
             left: 50%;
             transform: translateX(-50%);
             z-index: 3;
+            pointer-events: none;
 
             @include md() {
                 bottom: 16px;
@@ -188,6 +194,7 @@ const days = [
             left: 50%;
             transform: translateX(-50%);
             display: block;
+            pointer-events: none;
         }
 
         &.open {
@@ -203,6 +210,10 @@ const days = [
             }
         }
     }
+}
+
+.partner-logo {
+    pointer-events: none;
 }
 
 .bless {
@@ -568,4 +579,45 @@ if (lastOpenElement) {
 
 
 ////////////////////////////
+const partnersIndex =  [1, 2];
+
+
+function openQuest(index) {
+    index.classList.add('partners');
+}
+
+function closeQuest(index) {
+    index.classList.add('complete');
+}
+
+
+partnersIndex.forEach((partner) => {
+    openQuest(hearths[partner])
+})
+
+
+const Q1 = document.querySelector('.heart-2 button');
+const Q2 = document.querySelector('.heart-3 button');
+Q1.setAttribute('popovertarget', 'partnersQuest1');
+Q2.setAttribute('popovertarget', 'partnersQuest2');
+
+const day = Number(localStorage.getItem('day')) || 0;
+
+hearths.forEach((heart, index) => {
+    if (index < day) {
+
+        if(!heart.closest('.current-day')) {
+
+            if (!heart.closest('.partners') ) {
+                closeQuest(heart);
+            }
+        }
+    }
+});
+
+
+
+
+
+
 </script>

@@ -1,0 +1,132 @@
+---
+import ButtonHearth from '@components/Buttons/ButtonHearth.astro';
+const popUps = {
+    complete: 'complete'
+}
+const { complete } = popUps;
+---
+
+<section>
+    <article class="popup-quest-content">
+        <header data-header>
+            <div class="quest-logo">
+                <img width="100%" height="100%" src="/sempro.svg" alt="Квест" />
+            </div>
+            <h2 data-translate="semproTitle">Романтична метафора</h2>
+            <img src="/3heart.svg" />
+        </header>
+        <p data-translate="semproDesc" style="
+                font-family: 'MabryPro', sans-serif;
+                font-weight: 400;
+                text-align: left;
+                font-size: 22px;
+                ">Перейди за посиланням, будь підписаним на One Partners та Sempro в Instagram та лайкни цей пост...</p>
+        <br />
+        <p class="confirmation-text" style="font-size: 12px; text-align: center; color: #cecece;display: flex; justify-content: center;">
+            * После выполнения квеста подтвердите это, нажав "ОК" на вкладке
+        </p>
+    </article>
+    <div class="b-qb" style="display: flex;
+    justify-content: center;
+    width: 100%">
+        <ButtonHearth 
+            text="go" 
+            link="https://www.instagram.com/onepartners.io"
+            attrs={{
+                "popovertarget": complete,
+                "type": "button",
+            }} 
+        />
+    </div>
+</section>
+
+<style lang="scss">
+    .b-qb {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    section {
+        font-family: 'MabryPro', sans-serif;
+        font-weight: 600;
+        text-align: center;
+        
+        @media(max-width: 720px) {
+            font-size: 24px;
+        }
+
+        & p {
+            font-family: 'MabryPro', sans-serif;
+            font-weight: 400;
+            text-align: left;
+        }
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80%;
+            background-color: #6D06F2;
+            z-index: -1;
+            border-radius: var(--popup-border-radius);
+        }
+    }
+    .popup-quest-content {
+        margin-bottom: 40px;
+    }
+
+    .quest-logo {
+        border-radius: 50%;
+        padding: 8px;
+        background: #210446;
+        width: 56px;
+        height: 56px;
+        aspect-ratio: 1/1;
+
+        @media(min-width: 720px) {
+            width: 90px;
+            height: 90px;
+        }
+    }
+
+    h2 {
+        font-weight: 600;
+        font-size: 24px;
+        text-align: center;
+
+        @media(min-width: 720px) {
+            font-size: 26px;
+        }
+    }
+
+    p {
+        font-family: 'MabryPro', sans-serif;
+        font-weight: 400;
+        text-align: left;
+        font-size: 16px;
+
+        @media(min-width: 768px) {
+            font-size: 22px;
+        }
+    }
+
+    .confirmation-text {
+        font-size: 12px;
+        text-align: center;
+        color: #cecece;
+        display: flex;
+        justify-content: center;
+    }
+    header {
+    
+        display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 15px;
+                    margin-bottom: 30px;
+                
+    }
+</style>

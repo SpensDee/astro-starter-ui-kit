@@ -2,7 +2,7 @@
 import ButtonHearth from "@components/Buttons/ButtonHearth.astro";
 ---
 
-<form>
+<form action="/play">
     <img src="/logo-title.svg">
     <legend>
         <label class="form__label form-status">
@@ -54,7 +54,7 @@ import ButtonHearth from "@components/Buttons/ButtonHearth.astro";
     </legend>
         <a style="opacity: 0; pointer-events: none;" class="s-link" data-translate="link" href="https://aff.onepartners.io/signup/affiliate?source=valentine_day">Зареєструватися у One Partners</a>
     <div class="b-modal-btn">
-        <ButtonHearth text="startGameButton" type="submit" link="/play"/>
+        <ButtonHearth text="startGameButton" type="submit"/>
     </div>
     <br>
     <div class="desc" data-translate="formDesc">
@@ -66,148 +66,75 @@ import ButtonHearth from "@components/Buttons/ButtonHearth.astro";
 </form>
 
 <script>
-    // валидация
-document.addEventListener("DOMContentLoaded", () => {
-    if((localStorage.getItem('status') === 'visitor' && localStorage.getItem('phone') && localStorage.getItem('instagram')) ||
-    localStorage.getItem('status') === 'web' && localStorage.getItem('instagram') && localStorage.getItem('partner_id')) {
-        window.location.href = '/play'
-    }
-
-    const form = document.querySelector("form") as HTMLFormElement;
-    const phoneInput = form.querySelector("input[name='phone']") as HTMLInputElement;
-    const idInput = form.querySelector("input[name='id']") as HTMLInputElement;
-    const tellInput = form.querySelector("input[name='inst']") as HTMLInputElement;
-    const radioWeb = form.querySelector("input[value='web']") as HTMLInputElement;
-    const radioVisitor = form.querySelector("input[value='visitor']") as HTMLInputElement;
-    const submitButton = form.querySelector(".b-modal-btn") as HTMLButtonElement;
-    const linkToOne = document.querySelector('.s-link') as HTMLElement;
-
-    function saveToLocalStorage(): void {
-        const status = radioWeb.checked ? "web" : "visitor";
-        const phone = phoneInput.value.trim();
-        const partner_id = idInput.value.trim();
-        const instagram = tellInput.value.trim();
-
-
-        localStorage.setItem("status", status);
-        localStorage.setItem("phone", phone);
-        localStorage.setItem("partner_id", partner_id);
-        localStorage.setItem("instagram", instagram);
-    }
-
-    function validateForm(): void {
-    const isPhoneFilled = phoneInput.value.trim().length > 0;
-    const isIdFilled = idInput.value.trim().length > 0;
-    const isInstFilled = tellInput.value.trim().length > 0;
-    const isWebSelected = radioWeb.checked;
-    const isVisitorSelected = radioVisitor.checked;
-
-    // Делаем только нужные поля обязательными
-    phoneInput.required = isVisitorSelected; // Телефон нужен только для visitor
-    idInput.required = isWebSelected; // ID нужен только для web
-    tellInput.required = true; // Instagram всегда обязателен
-
-    const idLabel = idInput.closest(".form__label") as HTMLElement | null;
-    const phoneLabel = phoneInput.closest(".form__label") as HTMLElement | null;
-
-if (isWebSelected) {
-    if (idLabel) idLabel.style.display = "block";
-    if (phoneLabel) phoneLabel.style.display = "none";
-    if(linkToOne) linkToOne.style.opacity = "0";
-    if(linkToOne) linkToOne.style.pointerEvents = "none";
-
-    phoneInput.value = ""; // Очищаем поле, чтобы оно не мешало
-} 
-else if (isVisitorSelected) {
-    if (idLabel) idLabel.style.display = "none";
-    if (phoneLabel) phoneLabel.style.display = "block";
-    if(linkToOne) linkToOne.style.opacity = "1";
-    if(linkToOne) linkToOne.style.pointerEvents = "auto";
-
-    idInput.value = ""; // Очищаем поле, чтобы оно не мешало
-}
-
-
-    // Проверка условий для активации кнопки
-    if (
-        isInstFilled && // Instagram всегда обязателен
-        ((isWebSelected && isIdFilled) || (isVisitorSelected && isPhoneFilled)) // Web → ID нужен, Visitor → Phone нужен
-    ) {
-        submitButton.disabled = false;
-        submitButton.style.pointerEvents = "auto";
-        submitButton.style.opacity = "1"; 
-    } else {
-        submitButton.disabled = true;
-        submitButton.style.pointerEvents = "none";
-        submitButton.style.opacity = "0.5"; 
-    }
-
-    saveToLocalStorage();
-}
-
-
-    // запись данніх в локал сторейдж
-    function restoreFromLocalStorage(): void {
-        const storedStatus = localStorage.getItem("status");
-        const storedPhone = localStorage.getItem("phone");
-        const storedPartnerId = localStorage.getItem("partner_id");
-        const storedInstagram = localStorage.getItem("instagram");
-
-        if (storedPhone) phoneInput.value = storedPhone;
-        if (storedPartnerId) idInput.value = storedPartnerId;
-        if (storedInstagram) tellInput.value = storedInstagram;
-        if (storedStatus === "web") radioWeb.checked = true;
-        if (storedStatus === "visitor") radioVisitor.checked = true;
-
-        validateForm();
-    }
-
-    // Восстанавливаем данные при загрузке страницы
-    restoreFromLocalStorage();
-
-    // Отслеживание изменений в полях и радиокнопках
-    phoneInput.addEventListener("input", validateForm);
-    idInput.addEventListener("input", validateForm);
-    tellInput.addEventListener("input", validateForm);
-    radioWeb.addEventListener("change", validateForm);
-    radioVisitor.addEventListener("change", validateForm);
-});
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    // Получаем элементы формы
-    const tellInput = document.querySelector<HTMLInputElement>('input[name="phone"]')?.parentElement?.parentElement;
-    const ppidInput = document.querySelector<HTMLInputElement>('input[name="id"]')?.parentElement?.parentElement;
-    const webRadio = document.querySelector<HTMLInputElement>('input[name="partner"][value="web"]');
-    const visitorRadio = document.querySelector<HTMLInputElement>('input[name="partner"][value="visitor"]');
-
-    // Проверяем, что все элементы найдены
-    if (!tellInput || !ppidInput || !webRadio || !visitorRadio) {
-        console.error('One or more form elements not found');
-        return;
-    }
-
-    // Функция переключения полей
-    const toggleInputs = (): void => {
-        if (webRadio.checked) {
-            // Показываем поле ID партнера и скрываем Instagram
-            ppidInput.style.display = 'grid';
-            tellInput.style.display = 'none';
-        } else if (visitorRadio.checked) {
-            // Показываем поле Instagram и скрываем ID партнера
-            tellInput.style.display = 'grid';
-            ppidInput.style.display = 'none';
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector("form") as HTMLFormElement | null;
+        if (!form) return;
+    
+        const phoneInput = form.querySelector("input[name='phone']") as HTMLInputElement;
+        const idInput = form.querySelector("input[name='id']") as HTMLInputElement;
+        const tellInput = form.querySelector("input[name='inst']") as HTMLInputElement;
+        const radioWeb = form.querySelector("input[value='web']") as HTMLInputElement;
+        const radioVisitor = form.querySelector("input[value='visitor']") as HTMLInputElement;
+        const submitButton = form.querySelector(".b-modal-btn") as HTMLButtonElement;
+        const linkToOne = document.querySelector(".s-link") as HTMLElement | null;
+    
+        function saveToLocalStorage(): void {
+            localStorage.setItem("status", radioWeb.checked ? "web" : "visitor");
+            localStorage.setItem("phone", phoneInput.value.trim());
+            localStorage.setItem("partner_id", idInput.value.trim());
+            localStorage.setItem("instagram", tellInput.value.trim());
         }
-    };
-
-    // Добавляем обработчики для радиокнопок
-    webRadio.addEventListener('change', toggleInputs);
-    visitorRadio.addEventListener('change', toggleInputs);
-
-    // Вызываем функцию при загрузке страницы для установки начального состояния
-    toggleInputs();
-});
-</script>
+    
+        function validateForm(): void {
+            const isWebSelected: boolean = radioWeb.checked;
+            const isVisitorSelected: boolean = radioVisitor.checked;
+    
+            phoneInput.required = isVisitorSelected;
+            idInput.required = isWebSelected;
+            tellInput.required = true; // Instagram обязателен всегда
+    
+            const idLabel = idInput.closest(".form__label") as HTMLElement | null;
+            const phoneLabel = phoneInput.closest(".form__label") as HTMLElement | null;
+    
+            if (idLabel) idLabel.style.display = isWebSelected ? "block" : "none";
+            if (phoneLabel) phoneLabel.style.display = isVisitorSelected ? "block" : "none";
+    
+            if (linkToOne) {
+                linkToOne.style.opacity = isVisitorSelected ? "1" : "0";
+                linkToOne.style.pointerEvents = isVisitorSelected ? "auto" : "none";
+            }
+    
+            if (isWebSelected) phoneInput.value = ""; // Очищаем ненужное поле
+            if (isVisitorSelected) idInput.value = "";
+    
+            submitButton.disabled = !(
+                tellInput.value.trim() &&
+                ((isWebSelected && idInput.value.trim()) || (isVisitorSelected && phoneInput.value.trim()))
+            );
+    
+            saveToLocalStorage();
+        }
+    
+        function restoreFromLocalStorage(): void {
+            phoneInput.value = localStorage.getItem("phone") || "";
+            idInput.value = localStorage.getItem("partner_id") || "";
+            tellInput.value = localStorage.getItem("instagram") || "";
+    
+            const storedStatus = localStorage.getItem("status");
+            if (storedStatus === "web") radioWeb.checked = true;
+            if (storedStatus === "visitor") radioVisitor.checked = true;
+    
+            validateForm();
+        }
+    
+        restoreFromLocalStorage();
+    
+        form.addEventListener("input", validateForm);
+        radioWeb.addEventListener("input", validateForm);
+        radioVisitor.addEventListener("input", validateForm);
+    });
+    </script>
+    
 
 <style lang="scss">
     @use 'src/styles/vars' as *;
@@ -217,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
         width: 100%;
         justify-content: center;
         font-size: 16px;
-        color: var(--accent-color);
+        color: #EDFF00;
         text-decoration: underline;
         text-underline-offset: 4px;
         margin-bottom: 10px;
@@ -349,53 +276,29 @@ legend {
     display: flex;
     align-items: center;
 
-    &::after {
-        content: '';
-        position: absolute;
-        left: 50%;
-        bottom: -2px;
-        height: 2px;
-        width: 0;
-        background-color: var(--accent-color);
-        transition: all .5s ease-in;
+    & input {
+        height: 40px;
+        z-index: 9999999;
+        position: relative;
+        width: 100%;
     }
 
-    &:focus-within{
-        &::after{
-            width: 100%;
-            left: 0;
-        }
-        & input::placeholder {
-            color: var(--accent-color);
-        }
+    &:hover  {
+       border-color: #EDFF00;
     }
 
-    &:hover input::placeholder {
-        color: var(--accent-color);
-    }
-
-}
-
-input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active{
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: #ffffff;
-    transition: background-color 5000s ease-in-out 0s;
-    box-shadow: inset 0 0 20px 20px #23232329;
 }
 
 .form__input {
     width: 100%;
     background: none;
     border: none;
-    outline: none;
+    outline: transparent;
     font-size: 18px;
     color: var(--text-color);
     padding-left: 10px;
     text-align: center;font-size: 18px;
-    caret-color: var(--accent-color);
+    caret-color: #EDFF00;
 
     &::placeholder {
         font-size: 20px;
@@ -441,7 +344,7 @@ input:-webkit-autofill:active{
 
 .form__radio:hover,
 .form__radio:hover span {
-    border-color: var(--accent-color);
-    color: var(--accent-color);
+    border-color: #EDFF00;
+    color: #EDFF00;
 }
 </style>

@@ -41,6 +41,10 @@ const en = {
         <p>❤️ Choosing <span style="color: #EDFF00">"No"</span>— means tasks to be completed on social media.</p>
         <p>✅ Participation in both parts of the map is possible at the same time! </p>`,  
         link: 'SinUp in OnePartners',
+        semproTitle: 'Romantic Metaphor',
+        semproDesc: 'Follow the link, be subscribed to One Partners and Sempro on Instagram, and like this post. Come up with a romantic phrase: "One Partners and Sempro are like..." and share it in the comments for a chance to win a Sempro Pass to all Sempro events in 2025! You can also use emojis instead of words if they fit the theme. The task is valid until the end of the "Love Map" (until February 20, inclusive)!',
+        forQuestTitle: 'Cupid\'s Arrow',
+        forQuestDesc: 'Bring a friend to our One Partners affiliate program throughout February and get a guaranteed 5% referral fee from One Partners! The task is valid for 24 hours!',
 }
 
 export default en;

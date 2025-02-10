@@ -177,10 +177,12 @@ const { startGame } = popUps;
 
 
 <script>
-    if(localStorage.getItem('day') === null) {
-        localStorage.setItem('day', '2')
-    }
+    localStorage.setItem('day', '4');
+    
     if(localStorage.getItem('select_history') === null) {
         localStorage.setItem('select_history', '2')
+    }
+    if(localStorage.getItem('select_partner_quest') === null) {
+        localStorage.setItem('select_partner_quest', '2')
     }
 </script>

@@ -13,14 +13,19 @@ import OpenModalBtn from '@components/Buttons/OpenModalBtn.astro';
 import PopupComplete from '@components/Modals/popupComplete.astro';
 import PopupPrizes from '@components/Modals/PopupPrizes.astro';
 import Agree from '@components/Agree.astro';
+import PopupQuestPartners1 from '@components/Modals/PopupQuestPartners1.astro';
+import PopupQuestPartners2 from '@components/Modals/PopupQuestPartners2.astro';
 
 const popUps = {
     apply: 'apply',
     complete: 'complete',
-    prize: 'prize'
+    prize: 'prize',
+    partnersQuest: 'partnersQuest',
+    partnersQuest1: 'PopupQuestPartners1',
+    partnersQuest2: 'PopupQuestPartners2'
 }
 
-const { apply, complete, prize } = popUps;
+const { apply, complete, prize, partnersQuest1, partnersQuest2 } = popUps;
 
 ---
 
@@ -60,7 +65,13 @@ const { apply, complete, prize } = popUps;
         </PopupSecond>  
         <PopupSecond target={prize}>
             <PopupPrizes/>
-        </PopupSecond>  
+        </PopupSecond>   
+        <PopupSecond target="partnersQuest1">
+            <PopupQuestPartners1/>
+        </PopupSecond>
+        <PopupSecond target="partnersQuest2">
+            <PopupQuestPartners2/>
+        </PopupSecond>
     </Background>
 </Layout>
 
@@ -149,7 +160,5 @@ const { apply, complete, prize } = popUps;
 
 
 <script>
-    if(localStorage.getItem('day') === null) {
-        localStorage.setItem('day', '2')
-    }
+    localStorage.setItem('day', '4');
 </script>
