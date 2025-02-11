@@ -20,6 +20,13 @@ import './main.scss';
 		<link rel="preload" href="/title3-en.svg" as="image">
 		<link rel="preload" href="/title3-ru.svg" as="image">
 		<link rel="preload" href="/title3-ua.svg" as="image">
+		<script>
+			if ('serviceWorker' in navigator) {
+			navigator.serviceWorker.getRegistrations().then((registrations) => {
+				registrations.forEach((registration) => registration.unregister());
+			});
+			}
+		</script>
 		<AstroFont 
 		config={[
 			{

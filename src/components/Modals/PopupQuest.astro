@@ -58,7 +58,9 @@ const { complete } = popUps;
 </style>
 
 <script>
-import { partners, days } from 'src/functions/data';
+import { days as originalDays, webs } from 'src/functions/data';
+
+const days = localStorage.getItem('status') === 'web' ? webs : originalDays;
 
 const questContent = document.querySelector('.popup-quest-content') as HTMLElement | null;
 
